@@ -1,6 +1,9 @@
 AngularJS Server-Side Template
 ==============================
 
+
+[![Build Status](https://travis-ci.org/allenhwkim/angularjs-google-maps.png?branch=master)](https://travis-ci.org/allenhwkim/angular-template)
+
 This template engine does;
 
   1. Converting Angular expressions into html
@@ -28,9 +31,10 @@ It only converts expressions that have the concept of "bind once" by using `::` 
 1. bind once expression
   Assuming foo has the value of 123
 
-      ---------------------
-  * From {{::foo}}
-  * To   123
+  From 
+        {{::foo}}
+  To   
+        123
 
 2. **`ng-if`** directive with **`bind-once`** attribute
   Assuming foo has value `true`, and bar has value `false`
