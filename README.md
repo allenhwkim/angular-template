@@ -32,8 +32,11 @@ It only converts expressions that have the concept of "bind once" by using `::` 
   Assuming foo has the value of 123
 
   From 
+  
         {{::foo}}
-  To   
+  
+  To  
+  
         123
 
 2. **`ng-if`** directive with **`bind-once`** attribute
