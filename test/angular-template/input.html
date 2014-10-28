@@ -1,0 +1,41 @@
+<div>
+
+  <div ng-if='trueCase' bind-once>
+
+    <ul>
+      <li ng-repeat='el in elements'>
+        no bind-once, so no change should happen here
+        <b>{{el.name}}</b> :  <span>{{el.desc}}</span>
+      </li>
+
+      <li ng-repeat='el in elements' bind-once>
+        <b>{{::el.name}}</b> :  <span>{{::el.desc}}</span>
+      </li>
+    </ul>
+
+    The following should bind with variables
+    <div class="should-change">
+    {{::foo}}
+    {{::bar.baz}}
+    </div>
+
+    The following should bind with variables
+    <div class="should-not-change">
+      {{foo}}
+      {{bar.baz}}
+    </div>
+
+    <div ng-include="'include1.html'" bind-once></div>
+    <div ng-include="'include2.html'" bind-once></div>
+    <div ng-include="'no-bind-once-no-change.html'"></div>
+  </div>
+
+  <div ng-if='falseCase' bind-once class="should-change">
+    I should NOT be seen here.
+  </div>
+
+  <div ng-if='falseCase' class="should-not-change">
+    I should be seen here since ther is no bind-once.
+  </div>
+
+</div>

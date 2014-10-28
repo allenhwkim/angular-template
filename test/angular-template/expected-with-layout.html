@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <script src="foo.js"></script>
+    <link rel="stylesheet" href="bar.css" />
+    <contents-html tag="head"></contents-html>
+  </head>
+  <body>
+    foo<div>
+    
+      <div server-ng-if="trueCase">
+    
+        <ul>
+          <li ng-repeat="el in elements">
+            no bind-once, so no change should happen here
+            <b>{{el.name}}</b> :  <span>{{el.desc}}</span>
+          </li>
+    
+          <li server-ng-repeat="el in elements">
+    <b>el1</b> :  <span>el1 desc</span>
+    <b>el2</b> :  <span>el2 desc</span></li>
+        </ul>
+    
+        The following should bind with variables
+        <div class="should-change">
+        foooooooo
+        bazzzzz
+        </div>
+    
+        The following should bind with variables
+        <div class="should-not-change">
+          {{foo}}
+          {{bar.baz}}
+        </div>
+    
+        <div server-ng-include="&apos;include1.html&apos;">File Name 1
+    <div server-ng-if="trueCase">
+      <ul>
+        <li server-ng-repeat="el in elements">
+    <b>el1</b> :  <span>el1 desc</span>
+    <b>el2</b> :  <span>el2 desc</span></li>
+      </ul>
+      YYYY
+      foooooooo
+      bazzzzz
+    </div>
+    </div>
+        <div server-ng-include="&apos;include2.html&apos;">File Name 2
+    <div server-ng-if="trueCase">
+      <ul>
+        <li server-ng-repeat="el in elements">
+    <b>el1</b> :  <span>el1 desc</span>
+    <b>el2</b> :  <span>el2 desc</span></li>
+      </ul>
+      YYYY
+      foooooooo
+      bazzzzz
+    </div>
+    </div>
+        <div ng-include="&apos;no-bind-once-no-change.html&apos;"></div>
+      </div>
+    
+      <div class="should-change" server-ng-if="falseCase"></div>
+    
+      <div ng-if="falseCase" class="should-not-change">
+        I should be seen here since ther is no bind-once.
+      </div>
+    
+    </div>
+    bar
+    <footer>
+      <contents-html tag="footer" />
+    </footer>
+  </body>
+</html>

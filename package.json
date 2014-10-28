@@ -1,0 +1,32 @@
+{
+  "name": "angular-template",
+  "version": "0.1.0",
+  "description": "Node AngularJS Template",
+  "main": "angular-template.js",
+  "scripts": {
+    "test": "node test/**/test.js"
+  },
+  "author": "Allen Kim",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^0.17.0"
+  },
+  "devDependencies": {},
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/allenhwkim/angular-template.git"
+  },
+  "keywords": [
+    "angularjs",
+    "template",
+    "decorator",
+    "layout"
+  ],
+  "bugs": {
+    "url": "https://github.com/allenhwkim/angular-template/issues"
+  },
+  "homepage": "https://github.com/allenhwkim/angular-template"
+}
