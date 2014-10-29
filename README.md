@@ -28,66 +28,50 @@ Converting Angular Expressions
 This will safely convert the following expressions into html.  
 It only converts expressions that have the concept of "bind once" by using `::` or `bind-once` attribute.
 
-1. bind once expression
+1. bind once expression.   
   Assuming foo has the value of 123
 
-  From 
-  
-        {{::foo}}
+        Input                                  Output
+        -------------------------------------+---------------------------------
+        {{::foo}}                              123
 
-  To
-  
-        123
-
-2. **`ng-if`** directive with **`bind-once`** attribute
+2. **`ng-if`** directive with **`bind-once`** attribute.  
   Assuming foo has value `true`, and bar has value `false`
 
-  Input
+        Input                                | Output
+        -------------------------------------+---------------------------------
+        <p ng-if="foo" bind-once>SHOW</p>    | <p server-ng-if="foo">SHOW</p>    
+        <p ng-if="bar" bind-once>NO SHOW</p> | <p server-ng-if="bar"></p> 
 
-        <div ng-if="foo" bind-once>SHOW</div>
-        <div ng-if="bar" bind-once>NO SHOW</div>
+3. **`ng-include`** directive with **`bind-once`** attribute.   
+  Assuming foo.html has the following contents
 
-  Output
+        <b>file contents</b>
 
-        <div server-ng-if="foo">SHOW</div>     !!! true  !!!
-        <div server-ng-if="bar"></div>         !!! false !!!
+ The input and output would like;
 
-3. **`ng-include`** directive with **`bind-once`** attribute  
-  Assuming myfile.html has the following contents
+        Input                                     | Output
+        ------------------------------------------+------------------------------------
+        <p ng-include="'foo.html'" bind-once></p> | <p server-ng-include="'foo.html'">
+                                                  |  <div>file contents</div>
+                                                  | </p>
 
-        <div>this is my file contents</div>
-
-  Input
-
-        <div ng-include="'myfile.html'" bind-once></div>
-
-  Output
-
-        <div server-ng-include="'myfile.html'">
-          <div>this is my file contents</div>  !!! inserted !!!
-        </div>
 
 3. **`ng-repeat`** directive with **`bind-once`** attribute  
   Assuming collection has the vaulue of  
 
         {a:1, b:2, c:3, d:4, e:5}
 
-  Input
-
-        <div ng-repeat="(key, val) in collection" bind-once>
-          repeating contents {{::key}} : {{::val}}
-        </div>
-
-  Output
-
-        <div server-ng-repeat="(key, val) in collection" bind-once>
-          repeating contents a : 1            !!! repeated !!!
-          repeating contents b : 2            !!! repeated !!!
-          repeating contents c : 3            !!! repeated !!!
-          repeating contents d : 4            !!! repeated !!!
-          repeating contents e : 5            !!! repeated !!!
-
-        </div>
+        Input                                      | Output
+        -------------------------------------------+------------------------------------
+        <ul>                                       | <ul>
+           <li ng-repeat="(key, val) in collection"|   <!-- ng-repeat="(key, val) .. -->
+             bind-once> {{::key}} : {{::val}}</li> |   <li server-ng-repeat> a : 1</li> 
+         </ul>                                     |   <li server-ng-repeat> b : 2</li> 
+                                                   |   <li server-ng-repeat> c : 3</li>  
+                                                   |   <li server-ng-repeat> d : 4</li>  
+                                                   |   <li server-ng-repeat> e : 5</li>  
+                                                   | </ul>
 
 Applying Layout 
 ---------------
