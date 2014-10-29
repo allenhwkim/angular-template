@@ -34,8 +34,8 @@ It only converts expressions that have the concept of "bind once" by using `::` 
   From 
   
         {{::foo}}
-  
-  To  
+
+  To
   
         123
 
