@@ -8,7 +8,7 @@
         <b>{{el.name}}</b> :  <span>{{el.desc}}</span>
       </li>
 
-      <li ng-repeat='el in elements' bind-once>
+      <li ng-repeat='el in elements' foo="bar" bind-once>
         <b>{{::el.name}}</b> :  <span>{{::el.desc}}</span>
       </li>
     </ul>

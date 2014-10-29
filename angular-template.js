@@ -103,16 +103,36 @@ var compileNgRepeat = function($, scope) {
       var collectionStr = matches[2].trim().match(/[^ ]+/)[0];
       var collection = eval("scope."+collectionStr);
 
+      var attribsStr="";
+      for (var key in this.attribs) {
+        if (key == "ng-repeat") {
+          attribsStr += ' server-ng-repeat="' + this.attribs[key]+'"';
+        } else if (key != "bind-once")  {
+          attribsStr += ' ' + key + '="' + this.attribs[key] +'"';
+        }
+      }
+      // 0. ddd comment for this ng-repeat
+      var commentTag = "<!-- " + this.name + attribsStr + " -->\n";
+      $(this).before(commentTag);
+
+
+      // 1. build repeating tag,
       var compiledHtml = "";
-      for (var key in collection) {
+      for (key in collection) {
         var elScope = {};
         elScope[keyStr] = key;
         elScope[valueStr] = collection[key];
-        var template = "\n" + $(this).html().trim();
+        var template = "<" + this.name + attribsStr + ">";
+        template += $(this).html();
+        template += "</" + this.name + ">\n";
         compiledHtml += compileExpression(template, elScope);
       }
 
-      $(this).html(compiledHtml);
+      // 2. add the repeating part after the current tag
+      $(this).after(compiledHtml);
+
+      // 3. remove the current tag
+      $(this).remove();
     } catch (e) {
       var error= "Invalid ng-repeat expression, "+expr;
       console.log('e', e);

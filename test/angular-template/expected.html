@@ -8,9 +8,14 @@
         <b>{{el.name}}</b> :  <span>{{el.desc}}</span>
       </li>
 
-      <li server-ng-repeat="el in elements">
-<b>el1</b> :  <span>el1 desc</span>
-<b>el2</b> :  <span>el2 desc</span></li>
+      <!-- li server-ng-repeat="el in elements" foo="bar" -->
+<li server-ng-repeat="el in elements" foo="bar">
+        <b>el1</b> :  <span>el1 desc</span>
+      </li>
+<li server-ng-repeat="el in elements" foo="bar">
+        <b>el2</b> :  <span>el2 desc</span>
+      </li>
+
     </ul>
 
     The following should bind with variables
@@ -28,9 +33,14 @@
     <div server-ng-include="&apos;include1.html&apos;">File Name 1
 <div server-ng-if="trueCase">
   <ul>
-    <li server-ng-repeat="el in elements">
-<b>el1</b> :  <span>el1 desc</span>
-<b>el2</b> :  <span>el2 desc</span></li>
+    <!-- li server-ng-repeat="el in elements" a="1" b="2" -->
+<li server-ng-repeat="el in elements" a="1" b="2">
+      <b>el1</b> :  <span>el1 desc</span>
+    </li>
+<li server-ng-repeat="el in elements" a="1" b="2">
+      <b>el2</b> :  <span>el2 desc</span>
+    </li>
+
   </ul>
   YYYY
   foooooooo
@@ -40,9 +50,14 @@
     <div server-ng-include="&apos;include2.html&apos;">File Name 2
 <div server-ng-if="trueCase">
   <ul>
-    <li server-ng-repeat="el in elements">
-<b>el1</b> :  <span>el1 desc</span>
-<b>el2</b> :  <span>el2 desc</span></li>
+    <!-- li server-ng-repeat="el in elements" c="1" d="2" -->
+<li server-ng-repeat="el in elements" c="1" d="2">
+      <b>el1</b> :  <span>el1 desc</span>
+    </li>
+<li server-ng-repeat="el in elements" c="1" d="2">
+      <b>el2</b> :  <span>el2 desc</span>
+    </li>
+
   </ul>
   YYYY
   foooooooo

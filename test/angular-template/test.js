@@ -29,6 +29,7 @@ var template = AngularTemplate({
   layout: __dirname+"/layout.html"
 });
 result = template.compile(inputHtml, scope);
+//console.log('result', result);
 expected = fs.readFileSync(__dirname+"/expected-with-layout.html", 'utf8');
-assert(result.trim()===expected.trim());
+assert.equal(result.trim(), expected.trim());
 
