@@ -22,15 +22,11 @@ var nullifyAttr = function(elem, attrName) {
 var compileExpression = function(html, scope) {
   var compiledHtml = html;
   compiledHtml = compiledHtml.replace(/{{::([^}]+)}}/g, function(_, expr) {
-    var val = eval("scope."+expr);
-    var ret;
-    if (val) {
-      ret = val;
-    } else {
-      ret = "<!-- invalid expression, " + expr + " -->";
+    try {
+      return  eval("scope."+expr);
+    } catch(e) {
+      return"<!-- invalid expression, " + expr + " -->";
     }
-    debug && console.log("compiling", expr, "to", ret);
-    return ret;
   });
 
   return compiledHtml;
