@@ -1,6 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 var cheerio = require("cheerio");
+var entities = require("entities");
 var LayoutDecorator = require("./layout-decorator.js");
 var debug = debug || 0;
 
@@ -22,6 +23,7 @@ var nullifyAttr = function(elem, attrName) {
 var compileExpression = function(html, scope) {
   var compiledHtml = html;
   compiledHtml = compiledHtml.replace(/{{::([^}]+)}}/g, function(_, expr) {
+    expr = entities.decodeHTML(expr);
     try {
       return  eval("scope."+expr);
     } catch(e) {
