@@ -43,7 +43,7 @@ var LayoutDecorator = function(options) {
       var contentsMatches = contentsHtml.match(new RegExp(contentsTagRe));
       var contentsIndent = "";
       (contentsMatches)  && 
-        (contentsIndent= contentsMatches[1].match(/([\t\ ]*)[^\s]/)[1]);
+        (contentsIndent= contentsMatches[1].match(/([\t\ ]*?)[^\s]/)[1]);
       replacements[tag.name] = {
         layoutPart : tag.html,
         contentsMatches : contentsMatches,
@@ -70,8 +70,12 @@ var LayoutDecorator = function(options) {
     if (!replacements.body.contentsMathches) {
       var bodyHtml = contentsHtml;
       for (var tagName in replacements) {
-        bodyHtml.replace(replacements[tagName].contentsMatches, "");
+        if (replacements[tagName].contentsMatches) {
+          debug && console.log('removing START ---'+ replacements[tagName].contentsMatches[0] +'--- END');
+          bodyHtml = bodyHtml.replace(replacements[tagName].contentsMatches[0], "");
+        }
       }
+      debug && console.log('assumed body html after remove START ---'+ bodyHtml +'--- END');
       replacement = replacements.body;
       replacement.contentsIndent= bodyHtml.match(/([\t\ ]*)[^\s]/)[1];
       var additionalIndent = replacement.tagIndent.replace(replacement.contentsIndent, "");
