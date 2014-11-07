@@ -27,7 +27,7 @@ var compileExpression = function(html, scope) {
     try {
       return  eval("scope."+expr);
     } catch(e) {
-      return"<!-- invalid expression, " + expr + " -->";
+      console.log(" invalid expression ", expr);
     }
   });
 
