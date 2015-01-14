@@ -1,13 +1,13 @@
 AngularJS Server-Side Template
 ==============================
 
-
 [![Build Status](https://travis-ci.org/allenhwkim/angularjs-google-maps.png?branch=master)](https://travis-ci.org/allenhwkim/angular-template)
 
-This template engine does;
+AngularJS Expression Template Engine For NodeJS
+-----------------------------------------------
 
-  1. Converting Angular expressions into html
-  2. Applying layout into html template
+Why do I need this? If you are a big fan of AngularJS and you want to use AngularJS as a template engine, this node module will do the job.
+
 
 Install
 -------
@@ -17,106 +17,83 @@ Install
 Usage
 ------
 
-    var AngularTemplate = require('angular-template');
-    var template = AngularTemplate();
-    var html = "output: {{::foo}} {{::bar}}";
-    console.log(template.compile(html, {foo:1, bar:2}));
-    //output: 1 2
+    var angularTemplate = require('angular-template');
+    var data = { 
+        content: 'page1.html',  
+        foo: true, 
+        collection: [1,2,3,4,5] 
+      },
+    console.log( angularTemplate('layout.html', data) );
 
-Converting Angular Expressions
-------------------------------
-This will safely convert the following expressions into html.  
-It only converts expressions that have the concept of "bind once" by using `::` or `bind-once` attribute.
 
-1. bind once expression.   
-  Assuming foo has the value of 123
+Converting Angular One Time Binding Expressions
+------------------------------------------------
+This will safely convert the angularjs one time binding expressions into html.
 
-        Input                                  Output
+1. one time binding expression.
+
+  Assuming foo has the value of `123`
+
+        Input                                | Output
         -------------------------------------+---------------------------------
-        {{::foo}}                              123
+        {{::foo}}                            | 123
 
-2. **`ng-if`** directive with **`bind-once`** attribute.  
+2. one time binding **`ng-if`** directive.
+
   Assuming foo has value `true`, and bar has value `false`
 
         Input                                | Output
         -------------------------------------+---------------------------------
-        <p ng-if="foo" bind-once>SHOW</p>    | <p server-ng-if="foo">SHOW</p>    
-        <p ng-if="bar" bind-once>NO SHOW</p> | <p server-ng-if="bar"></p> 
+        <p ng-if="::foo">SHOW</p>    | <p>SHOW</p>    
+        <p ng-if="::bar">NO SHOW</p> | <p></p> 
+        <p ng-if="bar">NO SHOW</p>   | <p>NO SHOW</p> 
 
-3. **`ng-include`** directive with **`bind-once`** attribute.   
-  Assuming foo.html has the following contents
+3. **`ng-include`** directive.
 
-        <b>file contents</b>
+  Assuming foo.html has the following contents `<b>file contents</b>`
 
  The input and output would like;
 
         Input                                     | Output
         ------------------------------------------+------------------------------------
-        <p ng-include="'foo.html'" bind-once></p> | <p server-ng-include="'foo.html'">
+        <p ng-include="'foo.html'"></p>           | <p>
                                                   |  <div>file contents</div>
                                                   | </p>
 
 
-3. **`ng-repeat`** directive with **`bind-once`** attribute  
-  Assuming collection has the vaulue of  
+4. one time binding **`ng-repeat`** directive
 
-        {a:1, b:2, c:3, d:4, e:5}
+  Assuming collection has the vaulue of `{a:1, b:2, c:3, d:4, e:5}`
 
-        Input                                      | Output
-        -------------------------------------------+------------------------------------
-        <ul>                                       | <ul>
-           <li ng-repeat="(key, val) in collection"|   <!-- ng-repeat="(key, val) .. -->
-             bind-once> {{::key}} : {{::val}}</li> |   <li server-ng-repeat> a : 1</li> 
-         </ul>                                     |   <li server-ng-repeat> b : 2</li> 
-                                                   |   <li server-ng-repeat> c : 3</li>  
-                                                   |   <li server-ng-repeat> d : 4</li>  
-                                                   |   <li server-ng-repeat> e : 5</li>  
-                                                   | </ul>
+        Input                                         | Output
+        ----------------------------------------------+------------------------------------
+        <ul>                                          | <ul>
+           <li ng-repeat="(key, val) in ::collection">|   <li server-ng-repeat> a : 1</li>
+             {{::key}} : {{::val}}                    |   <li server-ng-repeat> b : 2</li>
+           </li>                                      |   <li server-ng-repeat> c : 3</li>
+        </ul>                                         |   <li server-ng-repeat> d : 4</li>
+                                                      |   <li server-ng-repeat> e : 5</li>
+                                                      | </ul>
 
-Applying Layout 
----------------
-This will decorate contents html with layout.  
+  Assuming collection has the vaulue of `[1,2,3,4,5]`
 
-Layout html have `<contents-html>` tag with attribute `tag`,  
-and contents html have tag matching to layout.
+        Input                                         | Output
+        ----------------------------------------------+------------------------------------
+        <ul>                                          | <ul>
+           <li ng-repeat="num in ::collection">       |   <li server-ng-repeat> 1 </li>
+             {{::num}}                                |   <li server-ng-repeat> 2 </li>
+           </li>                                      |   <li server-ng-repeat> 3 </li>
+        </ul>                                         |   <li server-ng-repeat> 4 </li>
+                                                      |   <li server-ng-repeat> 5 </li>
+                                                      | </ul>
 
-For example When you execute the following code
+5. one time binding **`ng-class`** directive
 
-    var template = AngularTemplate({layout: "layout.html"});
-    var html = fs.readFileSync('contents.html', 'utf8');
-    console.log(template.compile(html));
+  Assuming data is `{foo:true, bar: true}`
 
-with the following files;
-
-    -------------------------------------+---------------------------------
-    layout.html                          | contents.html                       
-    -------------------------------------+---------------------------------
-    <html>                               | <head>
-      <head>                             |   <script src="my.js"></script>
-        <script src="main.jss"></scirpt> | <head>
-        <contents-html tag="head"/>      | <body>
-      </head>                            |    Angular Template
-      <body>                             | </body>                            
-        Hello                            |
-        <contents-html tag="body"/>      |
-      </body>                            |
-    </html>                              |  
-
-The output will be;  
-
-    <html> 
-      <head>
-        <script src="main.jss"></scirpt>
-        <script src="my.js"></script>   !!! replaced !!!
-      </head>
-      <body>
-        Hello
-        Angular template                !!! replaced !!!
-      </body>
-    </html>
-
+        Input                                         | Output
+        ----------------------------------------------+------------------------------------
+        <p ng-class='::{foo: c-foo, bar: c-bar}'></p> | <p class="c-foo c-bar"></p>
 
 
 LICENSE: MIT
-
-
