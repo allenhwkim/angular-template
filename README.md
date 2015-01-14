@@ -8,6 +8,14 @@ AngularJS Expression Template Engine For NodeJS
 
 Why do I need this? If you are a big fan of AngularJS and you want to use AngularJS as a template engine, this node module will do the job.
 
+This template converts the following one time binding expressions on the server-side;
+
+  1. inline expression 
+  2. ng-if directive
+  3. ng-repeat directive
+  4. ng-class directive
+
+It also does server-side file include with `ng-include`
 
 Install
 -------
