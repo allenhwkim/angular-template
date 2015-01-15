@@ -6,9 +6,23 @@ var ngCompileExpression = require(__dirname+'/lib/ng-compile-expression.js'),
     ngCompileNgRepeat = require(__dirname+'/lib/ng-compile-ng-repeat.js'),
     ngCompileNgInclude = require(__dirname+'/lib/ng-compile-ng-include.js');
 
-var angularTemplate = function(htmlFile, data, basePath) {
+/**
+ * server-side angular template that converts all one time binding expressions
+ * It does process the following one time binding expressions;
+ *
+ *   * ng-if
+ *   * ng-class 
+ *   * ng-include
+ *   * ng-repeat
+ *   * {{::..}}
+ *
+ * parameters
+ *   html : html to be compiled
+ *   data: javascript object
+ *   basePath: base path to include file
+ */
+var angularTemplate = function(html, data, basePath) {
   basePath = basePath || '.';
-  var html = fs.readFileSync(htmlFile);
   var $ =cheerio.load(html);
   ngCompileNgIf($, data);
   ngCompileNgClass($, data);

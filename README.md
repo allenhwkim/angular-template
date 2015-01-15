@@ -26,12 +26,9 @@ Usage
 ------
 
     var angularTemplate = require('angular-template');
-    var data = { 
-        content: 'page1.html',  
-        foo: true, 
-        collection: [1,2,3,4,5] 
-      },
-    console.log( angularTemplate('layout.html', data) );
+    var html = require('fs').readFileSync('layout.html');
+    var data = { content: 'page1.html',  foo: true },
+    console.log( angularTemplate(html, data) );
 
 
 Converting Angular One Time Binding Expressions

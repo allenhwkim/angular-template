@@ -1,6 +1,7 @@
 var assert = require("assert");
 var cheerio = require("cheerio");
-var html=require('html');
+var html = require('html');
+var fs = require('fs');
 var ngCompileExpression = require(__dirname + '/../lib/ng-compile-expression.js');
 var ngCompileNgIf = require(__dirname + '/../lib/ng-compile-ng-if.js');
 var ngCompileNgClass = require(__dirname + '/../lib/ng-compile-ng-class.js');
@@ -91,7 +92,8 @@ assert.equal($("#id5").text(), "5");
 /**
  * angular-template test
  */
-var output = angularTemplate(__dirname+'/layout.html', {
+var html = fs.readFileSync(__dirname+'/layout.html' );
+var output = angularTemplate(html, {
     content: 'includes/include-level1.html', 
     foo: true,
     bar: false,
