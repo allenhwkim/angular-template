@@ -6,7 +6,8 @@ AngularJS Server-Side Template
 AngularJS Expression Template Engine For NodeJS
 -----------------------------------------------
 
-Why do I need this? If you are a big fan of AngularJS and you want to use AngularJS as a template engine, this node module will do the job.
+Why do I need this? 
+By unknown reason, I feel all server-side template engines are somewhat invasive. It looks like an odd language have been invaded HTML space. The only template I feel good about it is AngularJS, but it's all about client-side, not server-side part. If you are a big fan of AngularJS and you want to use AngularJS as a template engine, this node module will do the job.
 
 This template converts the following one time binding expressions on the server-side;
 
@@ -73,11 +74,11 @@ This will safely convert the angularjs one time binding expressions into html.
         Input                                         | Output
         ----------------------------------------------+------------------------------------
         <ul>                                          | <ul>
-           <li ng-repeat="(key, val) in ::collection">|   <li server-ng-repeat> a : 1</li>
-             {{::key}} : {{::val}}                    |   <li server-ng-repeat> b : 2</li>
-           </li>                                      |   <li server-ng-repeat> c : 3</li>
-        </ul>                                         |   <li server-ng-repeat> d : 4</li>
-                                                      |   <li server-ng-repeat> e : 5</li>
+           <li ng-repeat="(key, val) in ::collection">|   <li> a : 1</li>
+             {{::key}} : {{::val}}                    |   <li> b : 2</li>
+           </li>                                      |   <li> c : 3</li>
+        </ul>                                         |   <li> d : 4</li>
+                                                      |   <li> e : 5</li>
                                                       | </ul>
 
   Assuming collection has the vaulue of `[1,2,3,4,5]`
@@ -85,11 +86,11 @@ This will safely convert the angularjs one time binding expressions into html.
         Input                                         | Output
         ----------------------------------------------+------------------------------------
         <ul>                                          | <ul>
-           <li ng-repeat="num in ::collection">       |   <li server-ng-repeat> 1 </li>
-             {{::num}}                                |   <li server-ng-repeat> 2 </li>
-           </li>                                      |   <li server-ng-repeat> 3 </li>
-        </ul>                                         |   <li server-ng-repeat> 4 </li>
-                                                      |   <li server-ng-repeat> 5 </li>
+           <li ng-repeat="num in ::collection">       |   <li> 1 </li>
+             {{::num}}                                |   <li> 2 </li>
+           </li>                                      |   <li> 3 </li>
+        </ul>                                         |   <li> 4 </li>
+                                                      |   <li> 5 </li>
                                                       | </ul>
 
 5. one time binding **`ng-class`** directive
@@ -99,6 +100,7 @@ This will safely convert the angularjs one time binding expressions into html.
         Input                                         | Output
         ----------------------------------------------+------------------------------------
         <p ng-class='::{foo: c-foo, bar: c-bar}'></p> | <p class="c-foo c-bar"></p>
+                                                      |
 
 
 LICENSE: MIT
