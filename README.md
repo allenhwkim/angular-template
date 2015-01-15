@@ -6,7 +6,8 @@ AngularJS Server-Side Template
 AngularJS Expression Template Engine For NodeJS
 -----------------------------------------------
 
-Why do I need this? If you are a big fan of AngularJS and you want to use AngularJS as a template engine, this node module will do the job.
+Why do I need this? 
+By unknown reason, I feel all server-side template engines are somewhat invasive. It looks like an odd language have been invaded HTML space. The only template I feel good about it is AngularJS, but it's all about client-side, not server-side part. If you are a big fan of AngularJS and you want to use AngularJS as a template engine, this node module will do the job.
 
 This template converts the following one time binding expressions on the server-side;
 
