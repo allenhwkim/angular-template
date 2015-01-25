@@ -1,10 +1,10 @@
 var path = require('path');
 var fs = require('fs');
 var cheerio = require("cheerio");
-var compileExpression = require(__dirname +'/compile-expression.js'),
-    compileNgIf = require(__dirname +'/compile-ng-if.js'),
-    compileNgClass = require(__dirname +'/compile-ng-class.js'),
-    compileNgRepeat = require(__dirname +'/compile-ng-repeat.js');
+var compileExpression = require(__dirname +'/expression.js'),
+    compileNgIf = require(__dirname +'/ng-if.js'),
+    compileNgClass = require(__dirname +'/ng-class.js'),
+    compileNgRepeat = require(__dirname +'/ng-repeat.js');
 
 /**
  * server-side angular one time bind expression with ng-include

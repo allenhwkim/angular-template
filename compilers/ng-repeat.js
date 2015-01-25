@@ -1,5 +1,5 @@
 var cheerio = require("cheerio");
-var compileExpression = require(__dirname +'/compile-expression.js');
+var compileExpression = require(__dirname +'/expression.js');
 
 /**
  * server-side angular one time bind expression with ng-repeat={::...}}

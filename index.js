@@ -1,10 +1,10 @@
 var fs = require('fs');
 var cheerio = require("cheerio");
-var compileExpression = require(__dirname+'/lib/compile-expression.js'),
-    compileNgIf = require(__dirname+'/lib/compile-ng-if.js'),
-    compileNgClass = require(__dirname+'/lib/compile-ng-class.js'),
-    compileNgRepeat = require(__dirname+'/lib/compile-ng-repeat.js'),
-    compileNgInclude = require(__dirname+'/lib/compile-ng-include.js');
+var compileExpression = require(__dirname+'/compilers/expression.js'),
+    compileNgIf = require(__dirname+'/compilers/ng-if.js'),
+    compileNgClass = require(__dirname+'/compilers/ng-class.js'),
+    compileNgRepeat = require(__dirname+'/compilers/ng-repeat.js'),
+    compileNgInclude = require(__dirname+'/compilers/ng-include.js');
 
 /**
  * server-side angular template that converts all one time binding expressions

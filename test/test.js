@@ -2,11 +2,11 @@ var assert = require("assert");
 var cheerio = require("cheerio");
 var html = require('html');
 var fs = require('fs');
-var compileExpression = require(__dirname + '/../lib/compile-expression.js');
-var compileNgIf = require(__dirname + '/../lib/compile-ng-if.js');
-var compileNgClass = require(__dirname + '/../lib/compile-ng-class.js');
-var compileNgRepeat = require(__dirname + '/../lib/compile-ng-repeat.js');
-var compileNgInclude = require(__dirname + '/../lib/compile-ng-include.js');
+var compileExpression = require(__dirname + '/../compilers/expression.js');
+var compileNgIf = require(__dirname + '/../compilers/ng-if.js');
+var compileNgClass = require(__dirname + '/../compilers/ng-class.js');
+var compileNgRepeat = require(__dirname + '/../compilers/ng-repeat.js');
+var compileNgInclude = require(__dirname + '/../compilers/ng-include.js');
 var angularTemplate = require(__dirname + '/../index.js');
 
 /**
