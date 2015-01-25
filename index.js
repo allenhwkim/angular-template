@@ -1,10 +1,10 @@
 var fs = require('fs');
 var cheerio = require("cheerio");
-var ngCompileExpression = require(__dirname+'/lib/ng-compile-expression.js'),
-    ngCompileNgIf = require(__dirname+'/lib/ng-compile-ng-if.js'),
-    ngCompileNgClass = require(__dirname+'/lib/ng-compile-ng-class.js'),
-    ngCompileNgRepeat = require(__dirname+'/lib/ng-compile-ng-repeat.js'),
-    ngCompileNgInclude = require(__dirname+'/lib/ng-compile-ng-include.js');
+var compileExpression = require(__dirname+'/lib/compile-expression.js'),
+    compileNgIf = require(__dirname+'/lib/compile-ng-if.js'),
+    compileNgClass = require(__dirname+'/lib/compile-ng-class.js'),
+    compileNgRepeat = require(__dirname+'/lib/compile-ng-repeat.js'),
+    compileNgInclude = require(__dirname+'/lib/compile-ng-include.js');
 
 /**
  * server-side angular template that converts all one time binding expressions
@@ -24,11 +24,11 @@ var ngCompileExpression = require(__dirname+'/lib/ng-compile-expression.js'),
 var angularTemplate = function(html, data, basePath) {
   basePath = basePath || '.';
   var $ =cheerio.load(html);
-  ngCompileNgIf($, data);
-  ngCompileNgClass($, data);
-  ngCompileNgInclude($, data, basePath);
-  ngCompileNgRepeat($, data);
-  var compiledHtml = ngCompileExpression($.html(), data);
+  compileNgIf($, data);
+  compileNgClass($, data);
+  compileNgInclude($, data, basePath);
+  compileNgRepeat($, data);
+  var compiledHtml = compileExpression($.html(), data);
   return compiledHtml;
 };
 
