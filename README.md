@@ -50,9 +50,9 @@ This will safely convert the angularjs one time binding expressions into html.
 
         Input                                | Output
         -------------------------------------+---------------------------------
-        <p ng-if="::foo">SHOW</p>    | <p>SHOW</p>    
-        <p ng-if="::bar">NO SHOW</p> | <p></p> 
-        <p ng-if="bar">NO SHOW</p>   | <p>NO SHOW</p> 
+        <p ng-if="::foo">SHOW</p>            | <p>SHOW</p>    
+        <p ng-if="::bar">NO SHOW</p>         | <p></p> 
+        <p ng-if="bar">NO SHOW</p>           | <p>NO SHOW</p> 
 
 3. **`ng-include`** directive.
 
@@ -60,11 +60,11 @@ This will safely convert the angularjs one time binding expressions into html.
 
  The input and output would like;
 
-        Input                                     | Output
-        ------------------------------------------+------------------------------------
-        <p ng-include="'foo.html'"></p>           | <p>
-                                                  |  <div>file contents</div>
-                                                  | </p>
+        Input                                | Output
+        -------------------------------------+------------------------------------
+        <p ng-include="'foo.html'"></p>      | <p>
+                                             |  <div>file contents</div>
+                                             | </p>
 
 
 4. one time binding **`ng-repeat`** directive
