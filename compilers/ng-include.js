@@ -25,32 +25,41 @@ var compileExpression = require(__dirname +'/expression.js'),
  *   data: javascript object
  *   basePath: base path to include file
  */
+var getCompiledHtml = function(html, data, basePath) {
+  var $cheerio = cheerio.load(html);
+  compileNgIf($cheerio, data);
+  compileNgClass($cheerio, data);
+  compileNgInclude($cheerio, data, basePath);
+  compileNgRepeat($cheerio, data);
+  var compiledHtml = compileExpression($cheerio.html(), data);
+  return compiledHtml;
+};
 
 var compileNgInclude = function($, data, basePath) {
   basePath = basePath || '.';
   $("*[ng-include]").each(function(i, elem) {
-    var expr, fileName, filePath;
+    var expr, fileName, filePath, html;
     expr = $(this).attr('ng-include');
-    // if filename string, use as string,
-    // if filename is variable, use as expression
-    fileName = expr.match(/^['"]|['"]$/) ? 
-      expr.replace(/^['"]|['"]$/g, "") : data[expr];
-    filePath = path.normalize(basePath + "/" + fileName);
-    if (fs.existsSync(filePath)) {
-      var includedHtml = fs.readFileSync(filePath);
-      var $cheerio =cheerio.load(includedHtml);
-      compileNgIf($cheerio, data);
-      compileNgClass($cheerio, data);
-      compileNgInclude($cheerio, data, basePath);
-      compileNgRepeat($cheerio, data);
-      var compiled = compileExpression($cheerio.html(), data);
-      $(this).html(compiled);
-    } else {
-      var error= "Invalid ng-include, "+filePath;
-      console.error(error);
-      $(this).html("<!-- " + error + " -->");
+    // if file name is string
+    if (expr.match(/^['"]|['"]$/)) {
+      fileName = expr.replace(/^['"]|['"]$/g, "");
+      filePath = path.normalize(basePath + "/" + fileName);
+      html = fs.readFileSync(filePath);
+    } 
+    else {
+      fileName = data[expr];
+      filePath = path.normalize(basePath + "/" + fileName);
+      // ng-include has valule of variable and it is a file
+      if (fs.existsSync(filePath)) {
+        html = fs.readFileSync(filePath);
+      }
+      // ng-include has valule of variable and it is string
+      else {
+        html = ""+data[expr];
+      }
     }
-
+    html = getCompiledHtml(html, data, basePath);
+    $(this).html(html);
     $(this).removeAttr("ng-include");
   });
 };
