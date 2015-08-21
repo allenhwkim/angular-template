@@ -1,17 +1,14 @@
 {
   "name": "html-template",
-  "version": "1.0.9",
+  "version": "2.0.0",
   "description": "JsDoc Plugin and Template for AngularJs",
   "main": "index.js",
   "scripts": {
-    "test": "node spec.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git@github.com:allenhwkim/html-template.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": {
     "name": "Allen Kim",
