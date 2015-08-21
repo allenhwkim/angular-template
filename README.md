@@ -1,6 +1,6 @@
-HTML Template
+Angular Template
 ==============================
-[![build status](https://secure.travis-ci.org/allenhwkim/angular-template.png)](http://travis-ci.org/allenhwkim/html-template)
+[![build status](https://secure.travis-ci.org/allenhwkim/angular-template.png)](http://travis-ci.org/allenhwkim/angular-template)
 
 Angular-Like HTML Template Engine For NodeJS
 -----------------------------------------------
@@ -17,14 +17,14 @@ This template converts the following one time binding expressions on the server-
      e.g. `{{ foo }}`  
 
   2. `ht-if` attribute  
-     e.g., `<div hg-if="foo">..</div>`
+     e.g., `<div ht-if="foo">..</div>`
 
   3. `ht-repeat` attribute  
-     e.g., `<li hg-repeat="el in list">..</li>`  
-     e.g., `<li hg-repeat="(k,v) in list">..</li>`  
+     e.g., `<li ht-repeat="el in list">..</li>`  
+     e.g., `<li ht-repeat="(k,v) in list">..</li>`  
 
   4. ht-include attribute  
-     e.g., `<div hg-include="'file.html'"></div>`  
+     e.g., `<div ht-include="'file.html'"></div>`  
 
 Install
 -------
