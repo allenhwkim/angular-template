@@ -1,7 +1,6 @@
 HTML Template
 ==============================
-
-[![Build Status](https://travis-ci.org/allenhwkim/html-template.png?branch=master)](https://travis-ci.org/allenhwkim/html-template)
+[![build status](https://secure.travis-ci.org/allenhwkim/html-template.png)](http://travis-ci.org/allenhwkim/html-template)
 
 HTML Template Engine For NodeJS
 -----------------------------------------------
