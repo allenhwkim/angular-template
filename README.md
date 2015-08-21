@@ -14,12 +14,15 @@ If you are a big fan of AngularJS and you want to use AngularJS as a template en
 This template converts the following one time binding expressions on the server-side;
 
   1. inline expression  
-     e.g. `{{ foo }}`
+     e.g. `{{ foo }}`  
+
   2. `ht-if` attribute  
      e.g., `<div hg-if="foo">..</div>`
+
   3. `ht-repeat` attribute  
      e.g., `<li hg-repeat="el in list">..</li>`  
      e.g., `<li hg-repeat="(k,v) in list">..</li>`  
+
   4. ht-include attribute  
      e.g., `<div hg-include="'file.html'"></div>`  
 
