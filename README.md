@@ -1,7 +1,6 @@
 HTML Template
 ==============================
-
-[![Build Status](https://travis-ci.org/allenhwkim/html-template.png?branch=master)](https://travis-ci.org/allenhwkim/html-template)
+[![build status](https://secure.travis-ci.org/allenhwkim/angular-template.png)](http://travis-ci.org/allenhwkim/html-template)
 
 HTML Template Engine For NodeJS
 -----------------------------------------------
@@ -27,12 +26,12 @@ This template converts the following one time binding expressions on the server-
 Install
 -------
 
-    npm install html-template
+    npm install angualr-template
 
 Usage
 ------
 
-    var htmlTemplate = require('html-template');
+    var htmlTemplate = require('angular-template');
     htmlTemplate('{{foo}}', {foo:'Hello'}); //Hello
 
 
