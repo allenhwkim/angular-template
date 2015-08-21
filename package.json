@@ -1,33 +1,32 @@
 {
-  "name": "angular-template",
-  "version": "0.3.0",
-  "description": "Node AngularJS Template",
+  "name": "html-template",
+  "version": "1.0.9",
+  "description": "JsDoc Plugin and Template for AngularJs",
   "main": "index.js",
   "scripts": {
-    "test": "node test/test.js"
-  },
-  "author": "Allen Kim",
-  "license": "MIT",
-  "dependencies": {
-    "cheerio": "^0.17.0",
-    "entities": "^1.1.1"
-  },
-  "devDependencies": {
-    "html": "0.0.7"
-  },
-  "directories": {
-    "test": "test"
+    "test": "node spec.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/allenhwkim/angular-template.git"
+    "url": "git@github.com:allenhwkim/html-template.git"
   },
-  "keywords": [
-    "angularjs",
-    "template"
-  ],
-  "bugs": {
-    "url": "https://github.com/allenhwkim/angular-template/issues"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/allenhwkim/angular-template"
+  "author": {
+    "name": "Allen Kim",
+    "email": "allenhwkim@gmail.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "js-template": "~0.1.3"
+  },
+  "devDependencies": {
+    "gulp": "~3.8.5",
+    "gulp-bump": "~0.1.10",
+    "gulp-shell": "~0.2.7",
+    "gulp-tap": "~0.1.1",
+    "gulp-util": "~2.2.19"
+  }
 }

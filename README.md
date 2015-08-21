@@ -1,60 +1,63 @@
-AngularJS Server-Side Template
+HTML Template
 ==============================
 
-[![Build Status](https://travis-ci.org/allenhwkim/angularjs-google-maps.png?branch=master)](https://travis-ci.org/allenhwkim/angular-template)
+[![Build Status](https://travis-ci.org/allenhwkim/html-template.png?branch=master)](https://travis-ci.org/allenhwkim/html-template)
 
-AngularJS Expression Template Engine For NodeJS
+HTML Template Engine For NodeJS
 -----------------------------------------------
 
 Why do I need this? 
-By unknown reason, I feel all server-side template engines are somewhat invasive. It looks like an odd language have been invaded HTML space. The only template I feel good about it is AngularJS, but it's all about client-side, not server-side part. If you are a big fan of AngularJS and you want to use AngularJS as a template engine, this node module will do the job.
+By unknown reason, I feel all server-side template engines are somewhat invasive. 
+It looks like an odd language have been invaded HTML space. 
+The only template I feel good about it is AngularJS, but it's all about client-side, not server-side part.
+If you are a big fan of AngularJS and you want to use AngularJS as a template engine, this node module will do the job.
 
 This template converts the following one time binding expressions on the server-side;
 
-  1. inline expression 
-  2. ng-if directive
-  3. ng-repeat directive
-  4. ng-class directive
-
-It also does server-side file include with `ng-include`
+  1. inline expression  
+     e.g. `{{ foo }}`
+  2. `ht-if` attribute  
+     e.g., `<div hg-if="foo">..</div>`
+  3. `ht-repeat` attribute
+     e.g., `<li hg-repeat="el in list">..</li>`
+     e.g., `<li hg-repeat="(k,v) in list">..</li>`
+  4. ht-include attribute
+     e.g., `<div hg-include="'file.html'"></div>`
 
 Install
 -------
 
-    npm install angular-template
+    npm install html-template
 
 Usage
 ------
 
-    var angularTemplate = require('angular-template');
-    var html = require('fs').readFileSync('layout.html');
-    var data = { content: 'page1.html',  foo: true },
-    console.log( angularTemplate(html, data) );
+    var htmlTemplate = require('html-template');
+    htmlTemplate('{{foo}}', {foo:'Hello'}); //Hello
 
 
-Converting Angular One Time Binding Expressions
+Converting Angular-Like Expressions
 ------------------------------------------------
-This will safely convert the angularjs one time binding expressions into html.
+This will convert the angular-like expressions into html.
 
-1. one time binding expression.
+1. Curly braces expression.
 
   Assuming foo has the value of `123`
 
         Input                                | Output
         -------------------------------------+---------------------------------
-        {{::foo}}                            | 123
+        {{foo}}                              | 123
 
-2. one time binding **`ng-if`** directive.
+2.  **`ht-if`** attribute
 
   Assuming foo has value `true`, and bar has value `false`
 
         Input                                | Output
         -------------------------------------+---------------------------------
-        <p ng-if="::foo">SHOW</p>            | <p>SHOW</p>    
-        <p ng-if="::bar">NO SHOW</p>         | <p></p> 
-        <p ng-if="bar">NO SHOW</p>           | <p>NO SHOW</p> 
+        <p ht-if="foo">SHOW</p>              | <p>SHOW</p>    
+        <p ht-if="bar">NO SHOW</p>           | <p></p> 
 
-3. **`ng-include`** directive.
+3. **`ht-include`** attribute
 
   Assuming foo.html has the following contents `<b>file contents</b>`
 
@@ -62,20 +65,20 @@ This will safely convert the angularjs one time binding expressions into html.
 
         Input                                | Output
         -------------------------------------+------------------------------------
-        <p ng-include="'foo.html'"></p>      | <p>
-                                             |  <div>file contents</div>
+        <p ht-include="'foo.html'"></p>      | <p>
+                                             |   <b>file contents</b>
                                              | </p>
 
 
-4. one time binding **`ng-repeat`** directive
+4. **`ht-repeat`** attribute
 
   Assuming collection has the vaulue of `{a:1, b:2, c:3, d:4, e:5}`
 
         Input                                         | Output
         ----------------------------------------------+------------------------------------
         <ul>                                          | <ul>
-           <li ng-repeat="(key, val) in ::collection">|   <li> a : 1</li>
-             {{::key}} : {{::val}}                    |   <li> b : 2</li>
+           <li ht-repeat="(key, val) in collection">  |   <li> a : 1</li>
+             {{key}} : {{val}}                        |   <li> b : 2</li>
            </li>                                      |   <li> c : 3</li>
         </ul>                                         |   <li> d : 4</li>
                                                       |   <li> e : 5</li>
@@ -86,21 +89,12 @@ This will safely convert the angularjs one time binding expressions into html.
         Input                                         | Output
         ----------------------------------------------+------------------------------------
         <ul>                                          | <ul>
-           <li ng-repeat="num in ::collection">       |   <li> 1 </li>
-             {{::num}}                                |   <li> 2 </li>
+           <li ht-repeat="num in collection">         |   <li> 1 </li>
+             {{num}}                                  |   <li> 2 </li>
            </li>                                      |   <li> 3 </li>
         </ul>                                         |   <li> 4 </li>
                                                       |   <li> 5 </li>
                                                       | </ul>
-
-5. one time binding **`ng-class`** directive
-
-  Assuming data is `{foo:true, bar: true}`
-
-        Input                                         | Output
-        ----------------------------------------------+------------------------------------
-        <p ng-class='::{foo: c-foo, bar: c-bar}'></p> | <p class="c-foo c-bar"></p>
-                                                      |
 
 
 LICENSE: MIT
