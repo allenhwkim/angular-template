@@ -26,12 +26,12 @@ This template converts the following one time binding expressions on the server-
 Install
 -------
 
-    npm install html-template
+    npm install angualr-template
 
 Usage
 ------
 
-    var htmlTemplate = require('html-template');
+    var htmlTemplate = require('angular-template');
     htmlTemplate('{{foo}}', {foo:'Hello'}); //Hello
 
 
