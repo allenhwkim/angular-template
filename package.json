@@ -1,7 +1,7 @@
 {
   "name": "angular-template",
   "version": "2.0.2",
-  "description": "JsDoc Plugin and Template for AngularJs",
+  "description": "Angular-Like HTML Template",
   "main": "index.js",
   "scripts": {
     "test": "node spec.js"
