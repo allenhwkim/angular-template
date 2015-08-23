@@ -49,5 +49,4 @@ assert.equal("<li>a1</li><li>b2</li><li>c3</li>",
  * file does not exist, so it will print out as html, the file name
  *******************************************************************/
 console.log(8);
-assert.equal("<div>/Users/allen/github/angular-template/file1.html</div>",
-  ht("<div ht-include=\"file1.html\"></div>", {}, true));
+assert(ht("<div ht-include=\"file1.html\"></div>", {}).match(/<div>.*file1.html<\/div>/));
