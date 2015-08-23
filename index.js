@@ -1,10 +1,37 @@
 'use strict';
 var cheerio = require('cheerio');
 var jsTemplate = require('js-template');
+var path = require('path');
+var fs = require('fs');
 
-var htmlTemplate = function(html, data, jsMode) {
+var angularTemplate = function(html, data, options) {
+  var layoutPath = __filename;
+  options = options || {};
+
+  if (fs.existsSync(html)) { //html is a file
+    layoutPath = html;
+    html = fs.readFileSync(html,'utf8');
+  }
+
+  if (options.prefix) {
+    html = html.replace(new RegExp(options.prefix+"-",'g'), "ht-");
+  }
 
   var $ = cheerio.load(html); 
+
+  data.htIncludeFunc = function(fileName, data) {
+    var includePath = path.join(path.dirname(layoutPath), fileName);
+    var includeData={}, keys, len;
+    keys = Object.keys(data);
+    len =  keys.length;
+    while (len--) {
+      includeData[keys[len]] = data[keys[len]];
+    }
+    var includedHtml = angularTemplate(includePath, includeData, {
+      prefix: 'ng'
+    });
+    return includedHtml;
+  };
 
   /**
    * ht-if expression
@@ -23,7 +50,7 @@ var htmlTemplate = function(html, data, jsMode) {
   var htIncludes = $("*[ht-include]");
   htIncludes.each(function(i,elem) {
     var expr = $(this).attr('ht-include').trim();
-    $(this).append("&lt;%= include("+expr+", data) %&gt;");
+    $(this).append("&lt;%= htIncludeFunc('"+expr+"', data) %&gt;");
     $(this).removeAttr('ht-include');
   });
 
@@ -66,12 +93,25 @@ var htmlTemplate = function(html, data, jsMode) {
     .replace(/&lt;%/g, "<%")                       // <%
     .replace(/%&gt;/g,"%>")                        // %>
     .replace(/; i &lt;/g,"; i <")                  // ; i <
-    .replace(/\[&apos;/g, "['")                    // ['
-    .replace(/&apos;\]/g, "']")                    // ']
-    .replace(/\(&apos;([^&]+)&apos;/g, "('$1'")    // ('...')
+    .replace(/&apos;/g, "'")                       // '
+    .replace(/ &amp;&amp; /g, " && ")              // &&
     .replace(/{{[ ]*([^}]+)[ ]*}}/g, "<%= $1 %>"); // {{ .. }}
 
-  return jsMode ? output : jsTemplate(output, data)
+  if (options.jsMode) {
+    return output;
+  } else {
+    try {
+      return jsTemplate(output, data)
+    } catch(e) {
+      var lines = output.split("\n");
+      for(var i = e.lineNo -3; i< e.lineNo +3; i++) { 
+        console.log(i+1, lines[i]);
+      }
+      console.log("processing template:", layoutPath);
+      console.log("error in line", e.lineNo);
+      throw e;
+    }
+  }
 };
 
-module.exports = htmlTemplate;
+module.exports = angularTemplate;
