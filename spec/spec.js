@@ -56,6 +56,6 @@ assert(ht("<div ht-include=\"file1.html\"></div>", {}).match(/<div>.*file1.html<
  *******************************************************************/
 console.log(9);
 var output = ht("spec/layout.html", 
-  {nav:[], children:[{members:[]}]}, 
+  {nav:[], children:[{members:[], functions:[]}]}, 
   {jsMode:false, prefix:'ng'});
 

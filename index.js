@@ -79,7 +79,7 @@ var angularTemplate = function(fileOrHtml, data, options) {
       jsTmplStr = "&lt;% for(var "+keyExpr+" in "+collectionExpr+") { "+
         "  var "+valueExpr+"="+collectionExpr+"["+keyExpr+"]; %&gt;";
     } else if (valueExpr) {
-      jsTmplStr = "&lt;% for(var i=0; i < "+collectionExpr+".length; i++) { "+
+      jsTmplStr = "&lt;% for(var i in "+collectionExpr+") { "+
         "  var "+valueExpr+"="+collectionExpr+"[i]; %&gt;";
     }
     $(this).before(jsTmplStr);
