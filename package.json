@@ -1,10 +1,10 @@
 {
   "name": "angular-template",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "Angular-Like HTML Template",
   "main": "index.js",
   "scripts": {
-    "test": "node spec.js"
+    "test": "node spec/spec.js"
   },
   "repository": {
     "type": "git",

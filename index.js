@@ -4,13 +4,15 @@ var jsTemplate = require('js-template');
 var path = require('path');
 var fs = require('fs');
 
-var angularTemplate = function(html, data, options) {
-  var layoutPath = __filename;
+var angularTemplate = function(fileOrHtml, data, options) {
+  var layoutPath = __filename, html;
   options = options || {};
 
-  if (fs.existsSync(html)) { //html is a file
-    layoutPath = html;
-    html = fs.readFileSync(html,'utf8');
+  if (fs.existsSync(fileOrHtml)) {
+    layoutPath = fileOrHtml;
+    html = fs.readFileSync(fileOrHtml,'utf8');
+  } else {
+    html =fileOrHtml;
   }
 
   if (options.prefix) {
@@ -93,9 +95,10 @@ var angularTemplate = function(html, data, options) {
     .replace(/&lt;%/g, "<%")                       // <%
     .replace(/%&gt;/g,"%>")                        // %>
     .replace(/; i &lt;/g,"; i <")                  // ; i <
+    .replace(/&quot;/g, '"')                       // "
     .replace(/&apos;/g, "'")                       // '
     .replace(/ &amp;&amp; /g, " && ")              // &&
-    .replace(/{{[ ]*([^}]+)[ ]*}}/g, "<%= $1 %>"); // {{ .. }}
+    .replace(/{{(.*?)}}/g, "<%=$1%>"); // {{ .. }}
 
   if (options.jsMode) {
     return output;
@@ -103,13 +106,18 @@ var angularTemplate = function(html, data, options) {
     try {
       return jsTemplate(output, data)
     } catch(e) {
-      var lines = output.split("\n");
-      for(var i = e.lineNo -3; i< e.lineNo +3; i++) { 
-        console.log(i+1, lines[i]);
+      if (e.raisedOnceException) {
+        throw e.raisedOnceException;
+      } else {
+        var lines = output.split("\n");
+        for(var i = e.lineNo -3; i< e.lineNo +3; i++) { 
+          console.log(i+1, lines[i]);
+        }
+        console.log("processing template:", layoutPath);
+        console.log("error in line", e.lineNo);
+        e.raisedOnceException = e;
+        throw e;
       }
-      console.log("processing template:", layoutPath);
-      console.log("error in line", e.lineNo);
-      throw e;
     }
   }
 };

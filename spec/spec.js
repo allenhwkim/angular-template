@@ -1,6 +1,6 @@
 var assert = require('assert');
 var tmpl, data, expectedOutput, output;
-var ht = require('./index.js');
+var ht = require('../index.js');
 
 /*******************************************************
  * `{{}}` expression test
@@ -50,3 +50,12 @@ assert.equal("<li>a1</li><li>b2</li><li>c3</li>",
  *******************************************************************/
 console.log(8);
 assert(ht("<div ht-include=\"file1.html\"></div>", {}).match(/<div>.*file1.html<\/div>/));
+
+/*******************************************************************
+ * jsdoc template test
+ *******************************************************************/
+console.log(9);
+var output = ht("spec/layout.html", 
+  {nav:[], children:[{members:[]}]}, 
+  {jsMode:false, prefix:'ng'});
+
