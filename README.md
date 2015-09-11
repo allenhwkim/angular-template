@@ -29,7 +29,7 @@ This template converts the following one time binding expressions on the server-
 Install
 -------
 
-    npm install angualr-template
+    npm install angular-template
 
 Usage
 ------
