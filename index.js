@@ -2,6 +2,7 @@
 var cheerio = require('cheerio');
 var jsTemplate = require('js-template');
 var path = require('path');
+var _ = require('lodash');
 var fs = require('fs');
 
 var angularTemplate = function(fileOrHtml, data, options) {
@@ -19,10 +20,19 @@ var angularTemplate = function(fileOrHtml, data, options) {
     html = html.replace(new RegExp(options.prefix+"-",'g'), "ht-");
   }
 
-  var $ = cheerio.load(html); 
+  var $ = cheerio.load(html);
 
   data.htIncludeFunc = function(fileName, data) {
-    var includePath = path.join(path.dirname(layoutPath), fileName);
+    // exact value is given as expression
+    if(fileName.charAt(0) === "'"){
+      fileName = fileName.replace(/'/g,'');
+    }else{
+      // try to lookup template name in data
+      fileName = _.get(data, fileName, fileName)
+    }
+
+    var includePath = path.join(path.dirname(layoutPath), fileName).replace(/\\/g,'/'); // have to replace \ with / or test will fail on windows
+
     var includeData={}, keys, len;
     keys = Object.keys(data);
     len =  keys.length;
@@ -52,7 +62,7 @@ var angularTemplate = function(fileOrHtml, data, options) {
   var htIncludes = $("*[ht-include]");
   htIncludes.each(function(i,elem) {
     var expr = $(this).attr('ht-include').trim();
-    $(this).append("&lt;%= htIncludeFunc('"+expr+"', data) %&gt;");
+    $(this).append("&lt;%= htIncludeFunc('"+expr.replace(/'/g,'\\\'')+"', data) %&gt;");
     $(this).removeAttr('ht-include');
   });
 
@@ -64,7 +74,7 @@ var angularTemplate = function(fileOrHtml, data, options) {
     var expr = $(this).attr('ht-repeat').trim();
     var matches = expr.match(/^(.*?) in (.*?)$/);
     if (!matches)  return;
-    
+
     var keyValueExpr = matches[1].trim();
     var collectionExpr = matches[2].trim();
     var keyExpr, valueExpr, m1, m2;
@@ -73,7 +83,7 @@ var angularTemplate = function(fileOrHtml, data, options) {
     } else if (m2 = keyValueExpr.match(/^(\w+)$/)) {
       valueExpr = m2[1];
     }
-   
+
     var jsTmplStr;
     if (keyExpr) {
       jsTmplStr = "&lt;% for(var "+keyExpr+" in "+collectionExpr+") { "+
@@ -110,7 +120,7 @@ var angularTemplate = function(fileOrHtml, data, options) {
         throw e.raisedOnceException;
       } else {
         var lines = output.split("\n");
-        for(var i = e.lineNo -3; i< e.lineNo +3; i++) { 
+        for(var i = e.lineNo -3; i< e.lineNo +3; i++) {
           console.log(i+1, lines[i]);
         }
         console.log("processing template:", layoutPath);

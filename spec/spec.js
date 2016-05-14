@@ -40,7 +40,7 @@ assert.equal("<li>1</li><li>2</li><li>3</li>",
 console.log(7);
 assert.equal("<li>a1</li><li>b2</li><li>c3</li>",
   ht(
-    "<li ht-repeat='(k,v) in list'>{{k}}{{v}}</li>", 
+    "<li ht-repeat='(k,v) in list'>{{k}}{{v}}</li>",
     {list:{a:1, b:2, c:3}}
   ));
 
@@ -52,10 +52,18 @@ console.log(8);
 assert(ht("<div ht-include=\"file1.html\"></div>", {}).match(/<div>.*file1.html<\/div>/));
 
 /*******************************************************************
- * jsdoc template test
+ * `ht-include` expression test
+ * file does not exist, so it will print out as html, the file name
  *******************************************************************/
 console.log(9);
-var output = ht("spec/layout.html", 
-  {nav:[], children:[{members:[], functions:[]}]}, 
-  {jsMode:false, prefix:'ng'});
+assert(ht("<div ht-include=\"item.template\"></div>", {item:{template:'file2.html'}}).match(/<div>.*file2.html<\/div>/));
 
+
+
+/*******************************************************************
+ * jsdoc template test
+ *******************************************************************/
+console.log(10);
+var output = ht("spec/layout.html",
+  {nav:[], children:[{members:[], functions:[]}]},
+  {jsMode:false, prefix:'ng'});
