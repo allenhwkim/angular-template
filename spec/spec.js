@@ -45,25 +45,49 @@ assert.equal("<li>a1</li><li>b2</li><li>c3</li>",
   ));
 
 /*******************************************************************
- * `ht-include` expression test
+ * `ht-include` expression test, passed as non existing property for backwards compatibility
  * file does not exist, so it will print out as html, the file name
  *******************************************************************/
 console.log(8);
 assert(ht("<div ht-include=\"file1.html\"></div>", {}).match(/<div>.*file1.html<\/div>/));
 
 /*******************************************************************
- * `ht-include` expression test
+ * `ht-include` expression test, passed as string
  * file does not exist, so it will print out as html, the file name
  *******************************************************************/
 console.log(9);
+assert(ht("<div ht-include=\"'file1.html'\"></div>", {}).match(/<div>.*file1.html<\/div>/));
+
+/*******************************************************************
+ * `ht-include` expression test, passed as property
+ * file does not exist, so it will print out as html, the file name
+ *******************************************************************/
+console.log(10);
 assert(ht("<div ht-include=\"item.template\"></div>", {item:{template:'file2.html'}}).match(/<div>.*file2.html<\/div>/));
 
+/*******************************************************************
+ * `ht-include` expression test, passed as property in a repeat
+ * file does not exist, so it will print out as html, the file name
+ *******************************************************************/
+console.log(11);
+var exampleResult = ht("<div ht-repeat=\"item in items\"><div ht-include=\"item.template\"></div>", {items:[{template:'file3.html'}, {content:'foo', template:'spec/small.html'}]});
+assert(exampleResult.match(/<div>.*file3.html<\/div>/));
+assert(exampleResult.match(/<span>foo<\/span>/));
+
+/*******************************************************************
+ * `ht-include` expression test, passed as property in a nested repeat with key value
+ * file does not exist, so it will print out as html, the file name
+ *******************************************************************/
+console.log(12);
+var exampleResult2 = ht("<div ht-repeat=\"parentItem in items\"><div ht-repeat=\"(key, item) in parentItem.items\"><div ht-include=\"item.template\"></div>", {items:[{items:[{template:'file3.html'}]},{items:[{content:'foo', template:'spec/small.html'}]}]});
+assert(exampleResult2.match(/<div>.*file3.html<\/div>/));
+assert(exampleResult2.match(/<span>foo<\/span>/));
 
 
 /*******************************************************************
  * jsdoc template test
  *******************************************************************/
-console.log(10);
+console.log(13);
 var output = ht("spec/layout.html",
   {nav:[], children:[{members:[], functions:[]}]},
   {jsMode:false, prefix:'ng'});
