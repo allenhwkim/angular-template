@@ -2,7 +2,6 @@
 var cheerio = require('cheerio');
 var jsTemplate = require('js-template');
 var path = require('path');
-var _ = require('lodash');
 var fs = require('fs');
 
 var angularTemplate = function(fileOrHtml, data, options) {
@@ -23,13 +22,6 @@ var angularTemplate = function(fileOrHtml, data, options) {
   var $ = cheerio.load(html);
 
   data.htIncludeFunc = function(fileName, data) {
-    // exact value is given as expression
-    if(fileName.charAt(0) === "'"){
-      fileName = fileName.replace(/'/g,'');
-    }else{
-      // try to lookup template name in data
-      fileName = _.get(data, fileName, fileName)
-    }
 
     var includePath = path.join(path.dirname(layoutPath), fileName).replace(/\\/g,'/'); // have to replace \ with / or test will fail on windows
 
@@ -62,7 +54,16 @@ var angularTemplate = function(fileOrHtml, data, options) {
   var htIncludes = $("*[ht-include]");
   htIncludes.each(function(i,elem) {
     var expr = $(this).attr('ht-include').trim();
-    $(this).append("&lt;%= htIncludeFunc('"+expr.replace(/'/g,'\\\'')+"', data) %&gt;");
+    if(expr.charAt(0)!=="'"){ // if expression is given, try to take values from context and fallback to string value otherwise
+      var parts = expr.split('.');
+      var expressions = [];
+      for(var i = 0; i< parts.length; i++){
+        expressions.push(parts.slice(0,i+1).join('.'));
+      }
+      $(this).append("&lt;%= htIncludeFunc(typeof "+parts[0]+"!=='undefined' && "+expressions.join(' && ')+" ? "+expr+" : '"+expr.replace(/'/g,"\\'")+"', data) %&gt;");
+    }else{
+      $(this).append("&lt;%= htIncludeFunc("+expr+", data) %&gt;");
+    }
     $(this).removeAttr('ht-include');
   });
 
@@ -109,7 +110,6 @@ var angularTemplate = function(fileOrHtml, data, options) {
     .replace(/&apos;/g, "'")                       // '
     .replace(/ &amp;&amp; /g, " && ")              // &&
     .replace(/{{(.*?)}}/g, "<%=$1%>"); // {{ .. }}
-
   if (options.jsMode) {
     return output;
   } else {
