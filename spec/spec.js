@@ -83,11 +83,23 @@ var exampleResult2 = ht("<div ht-repeat=\"parentItem in items\"><div ht-repeat=\
 assert(exampleResult2.match(/<div>.*file3.html<\/div>/));
 assert(exampleResult2.match(/<span>foo<\/span>/));
 
-
 /*******************************************************************
  * jsdoc template test
  *******************************************************************/
 console.log(13);
-var output = ht("spec/layout.html",
+ht("spec/layout.html",
   {nav:[], children:[{members:[], functions:[]}]},
   {jsMode:false, prefix:'ng'});
+
+  /*******************************************************************
+   * cache and preprocess test
+   *******************************************************************/
+
+console.log(14);
+var exampleResult3 = ht("<div ng-include=\"'spec/small.html'\" ></div>", {item:{content:'foo'}}, {prefix:'ng',cache:'test', preprocess: function(tpl){
+  tpl = tpl.replace(/span/g,'div');
+  return tpl;
+}});
+assert(exampleResult3.match(/<div>foo<\/div>/));
+assert(ht.cache.test.match(/spec\/small\.html/));
+assert(ht.cache['test$spec/small.html'].match(/item\.content/));
