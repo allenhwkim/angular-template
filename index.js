@@ -150,6 +150,7 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
     }
     var includeOptions = options;
     if(options.cache){
+      includeOptions = extend({}, options);
       includeOptions.cache = options.cache+'$'+fileName;
     }
     var includedHtml = angularTemplate(includePath, includeData, includeOptions, true);

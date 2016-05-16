@@ -96,7 +96,7 @@ ht("spec/layout.html",
    *******************************************************************/
 
 console.log(14);
-var exampleResult3 = ht("<div ng-include=\"'spec/small.html'\" ></div>", {item:{content:'foo'}}, {prefix:'ng',cache:'test', preprocess: function(tpl){
+var exampleResult3 = ht("<div><div ng-include=\"'spec/small.html'\"></div><div ng-include=\"'spec/small.html'\"></div></div>", {item:{content:'foo'}}, {prefix:'ng',cache:'test', preprocess: function(tpl){
   tpl = tpl.replace(/span/g,'div');
   return tpl;
 }});
