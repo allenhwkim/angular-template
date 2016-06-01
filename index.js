@@ -4,12 +4,12 @@ var jsTemplate = require('js-template');
 var path = require('path');
 var fs = require('fs');
 var extend = require('extend');
-
+var cache = {};
 var angularTemplate = function(fileOrHtml, data, options, nested) {
   var layoutPath = __filename, html;
   options = options || {};
   // try to reuse cached output
-  var output = options.cache ? angularTemplate.cache[options.cache] : null;
+  var output = options.cache ? angularTemplate.cache.get(options.cache) : false;
   if(!output){
     if (fs.existsSync(fileOrHtml)) {
       layoutPath = fileOrHtml;
@@ -113,7 +113,7 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
       .replace(/ &amp;&amp; /g, " && ")              // &&
       .replace(/{{(.*?)}}/g, "<%=$1%>"); // {{ .. }}
     if(options.cache){
-      angularTemplate.cache[options.cache] = output;
+      angularTemplate.cache.put(options.cache, output);
     }
   }
   data.htIncludeFunc = htIncludeFunc;
@@ -151,7 +151,7 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
     var includeOptions = options;
     if(options.cache){
       includeOptions = extend({}, options);
-      includeOptions.cache = options.cache+'$'+fileName;
+      includeOptions.cache = options.cache+angularTemplate.cache.separator+fileName;
     }
     var includedHtml = angularTemplate(includePath, includeData, includeOptions, true);
     return includedHtml;
@@ -174,6 +174,29 @@ function parseRepeatExpression(expr) {
   }
   return {keyExpr:keyExpr, valueExpr:valueExpr, collectionExpr: collectionExpr};
 }
-// exposed prop that is used to store cached templates (right before calling jsTemplate)
-angularTemplate.cache = {};
+// few functions related to caching
+function cacheRemove(key) {
+  if(!key){
+    return;
+  }
+  // find related keys and remove them
+  Object.keys(cache).filter(function(k){
+    return k === key || k.indexOf(key+angularTemplate.cache.separator)===0;
+  }).forEach(function(k){
+    delete cache[k];
+  });
+}
+function cachePut(key, value) {
+  cache[key] = value;
+}
+function cacheGet(key) {
+  return cache[key];
+}
+// exposed prop that is used to store cached templates to avoid IO (right before calling jsTemplate)
+angularTemplate.cache = {
+  get: cacheGet,
+  put: cachePut,
+  remove: cacheRemove,
+  separator: '$$'
+};
 module.exports = angularTemplate;

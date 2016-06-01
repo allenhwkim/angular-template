@@ -101,5 +101,8 @@ var exampleResult3 = ht("<div><div ng-include=\"'spec/small.html'\"></div><div n
   return tpl;
 }});
 assert(exampleResult3.match(/<div>foo<\/div>/));
-assert(ht.cache.test.match(/spec\/small\.html/));
-assert(ht.cache['test$spec/small.html'].match(/item\.content/));
+assert(ht.cache.get('test').match(/spec\/small\.html/));
+assert(ht.cache.get('test$$spec/small.html').match(/item\.content/));
+ht.cache.remove('test');
+assert(ht.cache.get('test') === undefined);
+assert(ht.cache.get('test$$spec/small.html') === undefined);
