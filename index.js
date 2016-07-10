@@ -5,24 +5,40 @@ var path = require('path');
 var fs = require('fs');
 var extend = require('extend');
 var cache = {};
+var templateRegex = new RegExp(/[<>]/);
 var angularTemplate = function(fileOrHtml, data, options, nested) {
   var layoutPath = __filename, html;
   options = options || {};
   // try to reuse cached output
   var output = options.cache ? angularTemplate.cache.get(options.cache) : false;
-  if(!output){
-    if (fs.existsSync(fileOrHtml)) {
-      layoutPath = fileOrHtml;
-      html = fs.readFileSync(fileOrHtml,'utf8');
-    } else {
+  if (!output) {
+    // we've got a template
+    if (templateRegex.test(fileOrHtml)) {
       html = fileOrHtml;
+    } else {
+      // we've got a file path
+      layoutPath = fileOrHtml;
+      html = fileOrHtml; // same as before, if file doesn't exist - path will be shown
+      // absolute path
+      if (fs.existsSync(layoutPath)) {
+        html = fs.readFileSync(layoutPath,'utf8');
+      } else if(options.includeDirs) {
+        // relative path, check all includeDirs
+        for (var i = 0; i < options.includeDirs.length; i++) {
+          layoutPath = path.join(options.includeDirs[i], fileOrHtml);//.replace(/\\/g,'/'); // have to replace \ with / or test will fail on windows
+          if (fs.existsSync(layoutPath)) {
+            html = fs.readFileSync(layoutPath,'utf8');
+            break;
+          }
+        }
+      }
     }
     // same behavior as before
-    if(nested && (!options.prefix)){
+    if (nested && (!options.prefix)) {
       options.prefix = 'ng';
     }
     // invoke custom function if need that manipulates html
-    if(typeof options.preprocess==='function'){
+    if (typeof options.preprocess==='function') {
       html = options.preprocess(html);
     }
     if (options.prefix) {
@@ -139,8 +155,17 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
   }
 
   function htIncludeFunc(fileName, data, context) {
-    var includePath = path.join(path.dirname(layoutPath), fileName).replace(/\\/g,'/'); // have to replace \ with / or test will fail on windows
-    var includeData=context, keys, len;
+    var includeOptions = extend({}, options);
+    var defaultDir = path.dirname(layoutPath);
+    includeOptions.includeDirs = [].concat(options.includeDirs || []);
+    if(includeOptions.includeDirs.indexOf(defaultDir)===-1){
+      includeOptions.includeDirs.push(defaultDir);
+    }
+    if(options.cache){
+      includeOptions.cache = options.cache+angularTemplate.cache.separator+fileName;
+    }
+
+    var includeData = context, keys, len;
     keys = Object.keys(data);
     len =  keys.length;
     while (len--) {
@@ -148,12 +173,8 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
         includeData[keys[len]] = data[keys[len]];
       }
     }
-    var includeOptions = options;
-    if(options.cache){
-      includeOptions = extend({}, options);
-      includeOptions.cache = options.cache+angularTemplate.cache.separator+fileName;
-    }
-    var includedHtml = angularTemplate(includePath, includeData, includeOptions, true);
+
+    var includedHtml = angularTemplate(fileName, includeData, includeOptions, true);
     return includedHtml;
   };
 };

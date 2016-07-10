@@ -5,9 +5,9 @@ Angular Template
 Angular-Like HTML Template Engine For NodeJS
 -----------------------------------------------
 
-Why do I need this? 
-By unknown reason, I feel all server-side template engines are somewhat invasive. 
-It looks like an odd language have been invaded HTML space. 
+Why do I need this?
+By unknown reason, I feel all server-side template engines are somewhat invasive.
+It looks like an odd language have been invaded HTML space.
 The only template I feel good about it is AngularJS, but it's all about client-side, not server-side part.
 If you are a big fan of AngularJS and you want to use AngularJS as a template engine, this node module will do the job.
 
@@ -37,6 +37,19 @@ Usage
     var htmlTemplate = require('angular-template');
     htmlTemplate('{{foo}}', {foo:'Hello'}); //Hello
 
+    // or
+    var htmlTemplate = require('angular-template');
+    var path = "emails/template.html";
+    var options = {prefix:'ng'}; // so that ng-if, ng-repeat, ng-include would work
+    htmlTemplate(path, {name:'John'}, options);
+
+Options
+------
+
+    prefix: <string>, override default ht prefix with anything, typically ng to reuse angular templates
+    preprocess: <function>, enables you to modify your template before parsing it as HTML. E.g. You can remove some attributes with RegExp
+    includeDirs: <array of string>, a list of paths where to look for template
+    cache: <string>, specify cache key to avoid reading files from disk every time
 
 Converting Angular-Like Expressions
 ------------------------------------------------
@@ -57,7 +70,7 @@ This will convert the angular-like expressions into html.
         Input                                | Output
         -------------------------------------+---------------------------------
         <p ht-if="foo">SHOW</p>              | <p>SHOW</p>    
-        <p ht-if="bar">NO SHOW</p>           | <p></p> 
+        <p ht-if="bar">NO SHOW</p>           | <p></p>
 
 3. **`ht-include`** attribute
 

@@ -106,3 +106,9 @@ assert(ht.cache.get('test$$spec/small.html').match(/item\.content/));
 ht.cache.remove('test');
 assert(ht.cache.get('test') === undefined);
 assert(ht.cache.get('test$$spec/small.html') === undefined);
+
+/*******************************************************************
+ * includeDirs test
+ *******************************************************************/
+console.log(15);
+assert.equal('<div><div>test1</div></div>',ht("<div ng-include=\"'small.html'\"></div>", {item:{content:'test1'}}, {prefix:'ng', includeDirs:[__dirname+'/includes',__dirname]}));
