@@ -83,11 +83,34 @@ var exampleResult2 = ht("<div ht-repeat=\"parentItem in items\"><div ht-repeat=\
 assert(exampleResult2.match(/<div>.*file3.html<\/div>/));
 assert(exampleResult2.match(/<span>foo<\/span>/));
 
-
 /*******************************************************************
  * jsdoc template test
  *******************************************************************/
 console.log(13);
-var output = ht("spec/layout.html",
+ht("spec/layout.html",
   {nav:[], children:[{members:[], functions:[]}]},
   {jsMode:false, prefix:'ng'});
+
+  /*******************************************************************
+   * cache and preprocess test
+   *******************************************************************/
+
+console.log(14);
+var exampleResult3 = ht("<div><div ng-include=\"'spec/small.html'\"></div><div ng-include=\"'spec/small.html'\"></div></div>", {item:{content:'foo'}}, {prefix:'ng',cache:'test', preprocess: function(tpl){
+  tpl = tpl.replace(/span/g,'div');
+  return tpl;
+}});
+assert(exampleResult3.match(/<div>foo<\/div>/));
+assert(ht.cache.get('test').match(/spec\/small\.html/));
+assert(ht.cache.get('test$$spec/small.html').match(/item\.content/));
+ht.cache.remove('test');
+assert(ht.cache.get('test') === undefined);
+assert(ht.cache.get('test$$spec/small.html') === undefined);
+
+/*******************************************************************
+ * includeDirs test
+ *******************************************************************/
+console.log(15);
+assert.equal('<div><span>test1</span></div>',ht("<div ng-include=\"'small.html'\"></div>", {item:{content:'test1'}}, {prefix:'ng', includeDirs:[__dirname, __dirname+'/includes']}));
+console.log(16);
+assert.equal('<div><div>test1</div></div>',ht("<div ng-include=\"'small.html'\"></div>", {item:{content:'test1'}}, {prefix:'ng', includeDirs:[__dirname+'/includes',__dirname]}));
