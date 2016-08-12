@@ -181,7 +181,7 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
 
 
 function parseRepeatExpression(expr) {
-  var matches = expr.match(/^(.*?) in ([^\s]*?)$/);
+  var matches = expr.match(/^(.*?) in ([^\s]*)(.*?)$/);
   if (!matches) return false;
 
   var keyValueExpr = matches[1].trim();
