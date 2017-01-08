@@ -45,7 +45,7 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
       html = html.replace(new RegExp(options.prefix+"-",'g'), "ht-");
     }
 
-    var $ = cheerio.load(html);
+    var $ = cheerio.load(html, options.cheerioOptions);
     /**
      * ht-if expression
      */
