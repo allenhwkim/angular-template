@@ -6,11 +6,12 @@ var fs = require('fs');
 var extend = require('extend');
 var cache = {};
 var templateRegex = new RegExp(/[<>]/);
-var angularTemplate = function(fileOrHtml, data, options, nested) {
+var angularTemplate = function (fileOrHtml, data, options, nested) {
   var layoutPath = __filename, html;
   options = options || {};
   // try to reuse cached output
   var output = options.cache ? angularTemplate.cache.get(options.cache) : false;
+
   if (!output) {
     // we've got a template
     if (templateRegex.test(fileOrHtml)) {
@@ -21,100 +22,98 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
       html = fileOrHtml; // same as before, if file doesn't exist - path will be shown
       // absolute path
       if (fs.existsSync(layoutPath)) {
-        html = fs.readFileSync(layoutPath,'utf8');
-      } else if(options.includeDirs) {
+        html = fs.readFileSync(layoutPath, 'utf8');
+      } else if (options.includeDirs) {
         // relative path, check all includeDirs
         for (var i = 0; i < options.includeDirs.length; i++) {
           layoutPath = path.join(options.includeDirs[i], fileOrHtml);//.replace(/\\/g,'/'); // have to replace \ with / or test will fail on windows
           if (fs.existsSync(layoutPath)) {
-            html = fs.readFileSync(layoutPath,'utf8');
+            html = fs.readFileSync(layoutPath, 'utf8');
             break;
           }
         }
       }
     }
-    // same behavior as before
-    if (nested && (!options.prefix)) {
-      options.prefix = 'ng';
-    }
+
     // invoke custom function if need that manipulates html
-    if (typeof options.preprocess==='function') {
+    if (typeof options.preprocess === 'function') {
       html = options.preprocess(html);
     }
-    if (options.prefix) {
-      html = html.replace(new RegExp(options.prefix+"-",'g'), "ht-");
+    var prefix = options.prefix || 'ht';
+    // same behavior as before
+    if (nested && (!prefix)) {
+      prefix.prefix = 'ng';
     }
-
     var $ = cheerio.load(html, options.cheerioOptions);
     /**
      * ht-if expression
      */
-    var htIfs = $("*[ht-if]");
-    htIfs.each(function(i,elem) {
-      var expr = $(this).attr('ht-if').trim();
-      $(this).before("&lt;% if ("+ expr +") { %&gt;");
+    var htIfs = $("*[" + prefix + "-if]");
+    htIfs.each(function (i, elem) {
+      var expr = $(this).attr(prefix + '-if').trim();
+      $(this).before("&lt;% if (" + expr + ") { %&gt;");
       $(this).after("&lt;% } %&gt;");
-      $(this).removeAttr('ht-if');
+      $(this).removeAttr(prefix + '-if');
     });
 
     /**
      * ht-include expression
      */
-     var htIncludes = $("*[ht-include]");
-   htIncludes.each(function(i,elem) {
-     var context = '{}';
-     var repeatParents = [];
-     var existingContextProperties = [];
-     // parse all repeat expressions from all the parents
-     $(this).parents('[ht-repeat]').each(function(pi, parent){
-       var result = parseRepeatExpression($(this).attr('ht-repeat'));
-       if(result){
-         repeatParents.push(result); // remember all of them in bottom-top order
-       }
-     });
-     // go through each repeat expression (if any) and generate context with correct variables, ignoring already set props. aka deeper value is more important
-     if(repeatParents.length>0){
-       context = '{'+repeatParents.map(function(el){
-         var props = [];
-         if(existingContextProperties.indexOf(el.keyExpr)===-1){
-           props.push(el.keyExpr+':'+el.keyExpr);
-         }
-         if(existingContextProperties.indexOf(el.valueExpr)===-1){
-           props.push(el.valueExpr+':'+el.valueExpr);
-         }
-         return props.length>0?props.join(','):null;
-       }).join(',')+'}'
-     }
-     var expr = $(this).attr('ht-include').trim();
-     if(expr.charAt(0)!=="'"){ // if expression is given, try to take values from context and fallback to string value otherwise
-       var parts = expr.split('.');
-       var expressions = [];
-       for(var i = 0; i< parts.length; i++){
-         expressions.push(parts.slice(0,i+1).join('.'));
-       }
-       $(this).append("&lt;%= htIncludeFunc(typeof "+parts[0]+"!=='undefined' && "+expressions.join(' && ')+" ? "+expr+" : '"+expr.replace(/'/g,"\\'")+"', data, "+context+") %&gt;");
-     }else{
-       $(this).append("&lt;%= htIncludeFunc("+expr+", data,"+context+") %&gt;");
-     }
-     $(this).removeAttr('ht-include');
-   });
+    var htIncludes = $("*[" + prefix + "-include]");
+    htIncludes.each(function (i, elem) {
+      var context = '{}';
+      var repeatParents = [];
+      var existingContextProperties = [];
+      // parse all repeat expressions from all the parents
+      $(this).parents("[" + prefix + "-repeat]").each(function (pi, parent) {
+        var result = parseRepeatExpression($(this).attr(prefix + '-repeat'));
+        if (result) {
+          repeatParents.push(result); // remember all of them in bottom-top order
+        }
+      });
+      // go through each repeat expression (if any) and generate context with correct variables, ignoring already set props. aka deeper value is more important
+      if (repeatParents.length > 0) {
+        context = '{' + repeatParents.map(function (el) {
+          var props = [];
+          if (existingContextProperties.indexOf(el.keyExpr) === -1) {
+            props.push(el.keyExpr + ':' + el.keyExpr);
+          }
+          if (existingContextProperties.indexOf(el.valueExpr) === -1) {
+            props.push(el.valueExpr + ':' + el.valueExpr);
+          }
+          return props.length > 0 ? props.join(',') : null;
+        }).join(',') + '}'
+      }
+      var expr = $(this).attr(prefix + '-include').trim();
+      if (expr.charAt(0) !== "'") { // if expression is given, try to take values from context and fallback to string value otherwise
+        var parts = expr.split('.');
+        var expressions = [];
+        for (var i = 0; i < parts.length; i++) {
+          expressions.push(parts.slice(0, i + 1).join('.'));
+        }
+        $(this).append("&lt;%= htIncludeFunc(typeof " + parts[0] + "!=='undefined' && " + expressions.join(' && ') + " ? " + expr + " : '" + expr.replace(/'/g, "\\'") + "', data, " + context + ") %&gt;");
+      } else {
+        $(this).append("&lt;%= htIncludeFunc(" + expr + ", data," + context + ") %&gt;");
+      }
+      $(this).removeAttr(prefix + '-include');
+    });
 
     /**
      * ht-repeat expression
      */
-    var htRepeats = $("*[ht-repeat]");
-    htRepeats.each(function(i,elem) {
-      var expr = $(this).attr('ht-repeat').trim();
+    var htRepeats = $("*[" + prefix + "-repeat]");
+    htRepeats.each(function (i, elem) {
+      var expr = $(this).attr(prefix + '-repeat').trim();
       var result = parseRepeatExpression(expr);
-      if (!result)  return;
+      if (!result) return;
 
-      var jsTmplStr = "&lt;% for(var "+result.keyExpr+" in "+result.collectionExpr+") { "+
-          "  var "+result.valueExpr+"="+result.collectionExpr+"["+result.keyExpr+"]; %&gt;";
+      var jsTmplStr = "&lt;% for(var " + result.keyExpr + " in " + result.collectionExpr + ") { " +
+        "  var " + result.valueExpr + "=" + result.collectionExpr + "[" + result.keyExpr + "]; %&gt;";
 
       $(this).before(jsTmplStr);
       $(this).after("&lt;% } %&gt;");
 
-      $(this).removeAttr('ht-repeat');
+      $(this).removeAttr(prefix + '-repeat');
     });
 
     /**
@@ -122,13 +121,13 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
      */
     output = $.html()
       .replace(/&lt;%/g, "<%")                       // <%
-      .replace(/%&gt;/g,"%>")                        // %>
-      .replace(/; i &lt;/g,"; i <")                  // ; i <
+      .replace(/%&gt;/g, "%>")                        // %>
+      .replace(/; i &lt;/g, "; i <")                  // ; i <
       .replace(/&quot;/g, '"')                       // "
       .replace(/&apos;/g, "'")                       // '
       .replace(/ &amp;&amp; /g, " && ")              // &&
       .replace(/{{(.*?)}}/g, "<%=$1%>"); // {{ .. }}
-    if(options.cache){
+    if (options.cache) {
       angularTemplate.cache.put(options.cache, output);
     }
   }
@@ -138,13 +137,13 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
   } else {
     try {
       return jsTemplate(output, data);
-    } catch(e) {
+    } catch (e) {
       if (e.raisedOnceException) {
         throw e.raisedOnceException;
       } else {
         var lines = output.split("\n");
-        for(var i = e.lineNo -3; i< e.lineNo +3; i++) {
-          console.log(i+1, lines[i]);
+        for (var i = e.lineNo - 3; i < e.lineNo + 3; i++) {
+          console.log(i + 1, lines[i]);
         }
         console.log("processing template:", layoutPath);
         console.log("error in line", e.lineNo);
@@ -158,18 +157,18 @@ var angularTemplate = function(fileOrHtml, data, options, nested) {
     var includeOptions = extend({}, options);
     var defaultDir = path.dirname(layoutPath);
     includeOptions.includeDirs = [].concat(options.includeDirs || []);
-    if(includeOptions.includeDirs.indexOf(defaultDir)===-1){
+    if (includeOptions.includeDirs.indexOf(defaultDir) === -1) {
       includeOptions.includeDirs.push(defaultDir);
     }
-    if(options.cache){
-      includeOptions.cache = options.cache+angularTemplate.cache.separator+fileName;
+    if (options.cache) {
+      includeOptions.cache = options.cache + angularTemplate.cache.separator + fileName;
     }
 
     var includeData = context, keys, len;
     keys = Object.keys(data);
-    len =  keys.length;
+    len = keys.length;
     while (len--) {
-      if(!includeData[keys[len]]){
+      if (!includeData[keys[len]]) {
         includeData[keys[len]] = data[keys[len]];
       }
     }
@@ -193,17 +192,17 @@ function parseRepeatExpression(expr) {
     valueExpr = m2[1];
     keyExpr = 'i';
   }
-  return {keyExpr:keyExpr, valueExpr:valueExpr, collectionExpr: collectionExpr};
+  return { keyExpr: keyExpr, valueExpr: valueExpr, collectionExpr: collectionExpr };
 }
 // few functions related to caching
 function cacheRemove(key) {
-  if(!key){
+  if (!key) {
     return;
   }
   // find related keys and remove them
-  Object.keys(cache).filter(function(k){
-    return k === key || k.indexOf(key+angularTemplate.cache.separator)===0;
-  }).forEach(function(k){
+  Object.keys(cache).filter(function (k) {
+    return k === key || k.indexOf(key + angularTemplate.cache.separator) === 0;
+  }).forEach(function (k) {
     delete cache[k];
   });
 }

@@ -1,10 +1,10 @@
 {
   "name": "angular-template",
-  "version": "2.0.12",
+  "version": "2.0.13",
   "description": "Angular-Like HTML Template",
   "main": "index.js",
   "scripts": {
-    "test": "node spec/spec.js"
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
     "gulp-bump": "~0.1.10",
     "gulp-shell": "~0.2.7",
     "gulp-tap": "~0.1.1",
-    "gulp-util": "~2.2.19"
+    "gulp-util": "~2.2.19",
+    "jasmine": "^2.5.3"
   }
 }
