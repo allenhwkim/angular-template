@@ -37,6 +37,19 @@ describe("ht", () => {
     )).toEqual("<li>a1</li><li>b2</li><li>c3</li>");
   });
 
+  it('class', () => {
+    /*******************************************************
+     * `ht-class` expression test
+     *******************************************************/
+    expect(ht("<div ht-class='item.classes'>YES</div>", { item: { classes: 'highlight' } })).toEqual("<div class=\"highlight\">YES</div>");
+    expect(ht("<div ht-class='item.classes'>YES</div>", { item: { classes: { highlight: true } } })).toEqual("<div class=\"highlight\">YES</div>");
+    expect(ht("<div ht-class='item.classes'>YES</div>", { item: { classes: { highlight: true, odd: true } } })).toEqual("<div class=\"highlight odd\">YES</div>");
+    expect(ht("<div ht-class='item.classes'>YES</div>", { item: { classes: ['odd', { highlight: true }] } })).toEqual("<div class=\"odd highlight\">YES</div>");
+    expect(ht("<div class='baz' ht-class='item.classes'>YES</div>", { item: { classes: ['odd', { highlight: true }] } })).toEqual("<div class=\"baz odd highlight\">YES</div>");
+    expect(ht("<div class='baz' ht-class='item.classes'>YES</div>", { item: { classes: ['odd', { highlight: false }] } })).toEqual("<div class=\"baz odd\">YES</div>");
+
+  });
+
   it("include", () => {
     /*******************************************************************
      * `ht-include` expression test, passed as non existing property for backwards compatibility

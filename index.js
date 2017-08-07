@@ -88,6 +88,7 @@ angularTemplate.cache = new SimpleCache('$$');
 angularTemplate.directives = [
   require('./directives/include'),
   require('./directives/if'),
+  require('./directives/class'),
   require('./directives/repeat'),
 ];
 

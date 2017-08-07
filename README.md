@@ -111,5 +111,16 @@ This will convert the angular-like expressions into html.
                                                       |   <li> 5 </li>
                                                       | </ul>
 
+5.  **`ht-class`** attribute
+
+  Assuming classes has value `foo`, and classes2 has value `{baz:true}`.
+
+        Input                                | Output
+        -------------------------------------+---------------------------------
+        <p ht-class="classes">SHOW</p>       | <p class="foo">SHOW</p>    
+        <p ht-class="classes2">SHOW</p>      | <p class="baz">SHOW</p>
+
+This accepts the same format as [ng-class](https://docs.angularjs.org/api/ng/directive/ngClass)
+
 
 LICENSE: MIT
