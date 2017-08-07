@@ -1,6 +1,6 @@
 {
   "name": "angular-template",
-  "version": "2.0.13",
+  "version": "2.1.0",
   "description": "Angular-Like HTML Template",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,12 @@
     "name": "Allen Kim",
     "email": "allenhwkim@gmail.com"
   },
+  "contributors": [
+    {
+      "name": "Domas Trijonis",
+      "email": "domas.trijonis@gmail.com"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "cheerio": "^0.22.0",
