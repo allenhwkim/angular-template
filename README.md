@@ -122,5 +122,26 @@ This will convert the angular-like expressions into html.
 
 This accepts the same format as [ng-class](https://docs.angularjs.org/api/ng/directive/ngClass)
 
+6.  **`ht-bind`**, **`ht-bind-html`** attribute
+
+  Assuming content has value `<span>YES</span>`, and status has value `Done`.
+
+        Input                                | Output
+        -------------------------------------+---------------------------------
+        <p ht-bind="status"></p>             | <p>Done</p>    
+        <p ht-bind-html="content">SHOW</p>   | <p><span>YES</span></p>
+
+
+7.  **`ht-style`** attribute
+
+  Assuming color has value `red`, and styles has value `{color:green,'font-size':'12px'}`.
+
+        Input                                                      | Output
+        -----------------------------------------------------------+---------------------------------
+        <p ht-style="styles">SHOW</p>                              | <p class="color:green;font-size:12px;">SHOW</p>    
+        <p style="font-size:14px" ht-style="{color:color}">SHOW</p>| <p style="font-size:14px;color:red">SHOW</p>
+
+This accepts the same format as [ng-style](https://docs.angularjs.org/api/ng/directive/ngStyle)
+
 
 LICENSE: MIT
