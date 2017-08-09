@@ -50,6 +50,14 @@ describe("ht", () => {
 
   });
 
+  it('bind', () => {
+    /*******************************************************
+     * `ht-bind` expression test
+     *******************************************************/
+    expect(ht("<div ht-bind='title'></div>", { title: 'YES'})).toEqual("<div>YES</div>");
+    expect(ht("<div ht-bind-html='title'></div>", { title: '<span>YES</span>'})).toEqual("<div><span>YES</span></div>");
+  });
+
   it("include", () => {
     /*******************************************************************
      * `ht-include` expression test, passed as non existing property for backwards compatibility

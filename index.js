@@ -90,6 +90,7 @@ angularTemplate.directives = [
   require('./directives/if'),
   require('./directives/class'),
   require('./directives/repeat'),
+  require('./directives/bind')
 ];
 
 // all internal helpers will be exposed as well and can be override
