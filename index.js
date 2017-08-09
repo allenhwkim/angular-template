@@ -31,7 +31,9 @@ var angularTemplate = function (fileOrHtml, data, options, nested) {
     if (!options.prefix) {
       options.prefix = 'ht';
     }
-
+    if (!options.cheerioOptions) {
+      options.cheerioOptions = { xmlMode: true };
+    }
     var $ = cheerio.load(html, options.cheerioOptions);
 
     // namespace for all used functions within template
