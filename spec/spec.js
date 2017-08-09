@@ -47,6 +47,7 @@ describe("ht", () => {
     expect(ht("<div ht-class='item.classes'>YES</div>", { item: { classes: ['odd', { highlight: true }] } })).toEqual("<div class=\"odd highlight\">YES</div>");
     expect(ht("<div class='baz' ht-class='item.classes'>YES</div>", { item: { classes: ['odd', { highlight: true }] } })).toEqual("<div class=\"baz odd highlight\">YES</div>");
     expect(ht("<div class='baz' ht-class='item.classes'>YES</div>", { item: { classes: ['odd', { highlight: false }] } })).toEqual("<div class=\"baz odd\">YES</div>");
+    expect(ht("<div class='baz' ht-class='{ highlight: item.highlight }'>YES</div>", { item: { highlight: true } })).toEqual("<div class=\"baz highlight\">YES</div>");
 
   });
 
@@ -54,8 +55,16 @@ describe("ht", () => {
     /*******************************************************
      * `ht-bind` expression test
      *******************************************************/
-    expect(ht("<div ht-bind='title'></div>", { title: 'YES'})).toEqual("<div>YES</div>");
-    expect(ht("<div ht-bind-html='title'></div>", { title: '<span>YES</span>'})).toEqual("<div><span>YES</span></div>");
+    expect(ht("<div ht-bind='title'></div>", { title: 'YES' })).toEqual("<div>YES</div>");
+    expect(ht("<div ht-bind-html='title'></div>", { title: '<span>YES</span>' })).toEqual("<div><span>YES</span></div>");
+  });
+
+  it('style', () => {
+
+    expect(ht("<div ht-style='styles'>YES</div>", { styles: { color: 'red' } })).toEqual("<div style=\"color:red\">YES</div>");
+    expect(ht("<div style='color:red' ht-style='styles'>YES</div>", { styles: { 'font-size': '12px' } })).toEqual("<div style=\"color:red;font-size:12px\">YES</div>");
+    expect(ht("<div style='color:red' ht-style='styles'>YES</div>", { styles: { 'font-size': '12px', width: '45px' } })).toEqual("<div style=\"color:red;font-size:12px;width:45px\">YES</div>");
+    expect(ht("<div style='color:red' ht-style='{\"font-size\": fontSize}'>YES</div>", { fontSize: '12px' })).toEqual("<div style=\"color:red;font-size:12px\">YES</div>");
   });
 
   it("include", () => {

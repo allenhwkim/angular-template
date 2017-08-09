@@ -4,8 +4,8 @@ function ClassDirective($, data, options, angularTemplate) {
   /**
    * ht-class expression
    */
-  var htIfs = $("*[" + options.prefix + "-class]");
-  htIfs.each(function (i, elem) {
+  var classes = $("*[" + options.prefix + "-class]");
+  classes.each(function (i, elem) {
     var expr = $(this).attr(options.prefix + '-class').trim();
     var classes = ($(this).attr('class') || '').trim();
     if (classes) {
