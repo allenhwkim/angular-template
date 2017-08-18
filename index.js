@@ -32,7 +32,7 @@ var angularTemplate = function (fileOrHtml, data, options, nested) {
       options.prefix = 'ht';
     }
     if (!options.cheerioOptions) {
-      options.cheerioOptions = { xmlMode: true };
+      options.cheerioOptions = { _useHtmlParser2: true };
     }
     var $ = cheerio.load(html, options.cheerioOptions);
 
@@ -96,7 +96,7 @@ angularTemplate.directives = [
   require('./directives/style')
 ];
 
-// all internal helpers will be exposed as well and can be override
+// all internal helpers will be exposed as well and can be overriden
 angularTemplate.helpers = require('./lib/helpers');
 
 module.exports = angularTemplate;
