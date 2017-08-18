@@ -1,6 +1,5 @@
 'use strict';
 var path = require('path');
-var extend = require('extend');
 
 function IncludeDirective($, data, options, angularTemplate) {
   /**
@@ -46,7 +45,7 @@ function IncludeDirective($, data, options, angularTemplate) {
   });
 
   data.$helpers.htIncludeFunc = function htIncludeFunc(fileName, data, context) {
-    var includeOptions = extend({}, options);
+    var includeOptions = Object.assign({}, options);
     var defaultDir = path.dirname(options.layoutPath);
     includeOptions.includeDirs = [].concat(options.includeDirs || []);
     if (includeOptions.includeDirs.indexOf(defaultDir) === -1) {

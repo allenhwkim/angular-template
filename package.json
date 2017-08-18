@@ -1,6 +1,6 @@
 {
   "name": "angular-template",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Angular-Like HTML Template",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,6 @@
   "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "extend": "^3.0.1",
     "js-template": "~0.1.4"
   },
   "devDependencies": {
