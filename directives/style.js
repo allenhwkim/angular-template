@@ -15,7 +15,9 @@ function StyleDirective($, data, options, angularTemplate) {
     $(this).removeAttr(options.prefix + '-style');
     $(this).attr('style', style + '<%=$helpers.generateStyle(' + expr + ')%>');
   });
+}
 
+StyleDirective.init = function (data, options, angularTemplate) {
   data.$helpers.generateStyle = function generateStyle(input) {
     if (typeof (input) === 'object') {
       return Object.keys(input).map(function (property) {
@@ -24,6 +26,6 @@ function StyleDirective($, data, options, angularTemplate) {
     }
     return '';
   }
-}
+};
 
 module.exports = StyleDirective

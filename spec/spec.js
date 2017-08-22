@@ -138,9 +138,16 @@ describe("ht", () => {
     expect(exampleResult3).toMatch(/<div>foo<\/div>/);
     expect(ht.cache.get('test')).toMatch(/spec\/small\.html/);
     expect(ht.cache.get('test$$spec/small.html')).toMatch(/item\.content/);
+    
+    expect(ht("<div><div ng-include=\"'spec/small.html'\"></div><div ng-include=\"'spec/small.html'\"></div></div>", { item: { content: 'foo' } }, {
+      prefix: 'ng', cache: 'test', preprocess: function (tpl) {
+        tpl = tpl.replace(/span/g, 'div');
+        return tpl;
+      }
+    })).toMatch(/<div>foo<\/div>/);
+
     ht.cache.remove('test');
     expect(ht.cache.get('test')).toBeUndefined();
     expect(ht.cache.get('test$$spec/small.html')).toBeUndefined();
-
   });
 });

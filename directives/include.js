@@ -43,7 +43,9 @@ function IncludeDirective($, data, options, angularTemplate) {
     }
     $(this).removeAttr(options.prefix + '-include');
   });
+}
 
+IncludeDirective.init = function (data, options, angularTemplate) {
   data.$helpers.htIncludeFunc = function htIncludeFunc(fileName, data, context) {
     var includeOptions = Object.assign({}, options);
     var defaultDir = path.dirname(options.layoutPath);
@@ -67,6 +69,6 @@ function IncludeDirective($, data, options, angularTemplate) {
     var includedHtml = angularTemplate(fileName, includeData, includeOptions, true);
     return includedHtml;
   };
-}
+};
 
 module.exports = IncludeDirective

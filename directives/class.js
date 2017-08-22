@@ -15,7 +15,9 @@ function ClassDirective($, data, options, angularTemplate) {
     $(this).removeAttr(options.prefix + '-class');
     $(this).attr('class', classes + '<%=$helpers.generateClassList(' + expr + ')%>');
   });
+}
 
+ClassDirective.init = function (data, options, angularTemplate) {
   data.$helpers.generateClassList = function generateClassList(input) {
     var list;
     if (Array.isArray(input)) {
@@ -32,6 +34,6 @@ function ClassDirective($, data, options, angularTemplate) {
       return !!v;
     }).join(' ')
   }
-}
+};
 
 module.exports = ClassDirective

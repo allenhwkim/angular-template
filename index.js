@@ -11,7 +11,12 @@ var angularTemplate = function (fileOrHtml, data, options, nested) {
   options.layoutPath = __filename;
   // try to reuse cached output
   var output = options.cache ? angularTemplate.cache.get(options.cache) : false;
-
+  // namespace for all used functions within template
+  data.$helpers = {};
+  // run through all supported directives and init them
+  angularTemplate.directives.forEach(function (run) {
+    run.init && run.init(data, options, angularTemplate);
+  });
   if (!output) {
     // we've got a template
     if (templateRegex.test(fileOrHtml)) {
@@ -35,9 +40,6 @@ var angularTemplate = function (fileOrHtml, data, options, nested) {
       options.cheerioOptions = { _useHtmlParser2: true };
     }
     var $ = cheerio.load(html, options.cheerioOptions);
-
-    // namespace for all used functions within template
-    data.$helpers = {};
 
     // run through all supported directives
     angularTemplate.directives.forEach(function (run) {
