@@ -102,14 +102,16 @@ describe("ht", () => {
     expect(exampleResult2).toMatch(/<div>.*file3.html<\/div>/);
     expect(exampleResult2).toMatch(/<span>foo<\/span>/);
 
-    it("directory", () => {
-      /*******************************************************************
-       *  * includeDirs test
-       * *******************************************************************/
-      expect.equal('<div><span>test1</span></div>', ht("<div ng-include=\"'small.html'\"></div>", { item: { content: 'test1' } }, { prefix: 'ng', includeDirs: [__dirname, __dirname + '/includes'] }));
-      expect.equal('<div><div>test1</div></div>', ht("<div ng-include=\"'small.html'\"></div>", { item: { content: 'test1' } }, { prefix: 'ng', includeDirs: [__dirname + '/includes', __dirname] }));
+  });
 
-    });
+  it("directory", () => {
+    /*******************************************************************
+     *  * includeDirs test
+     * *******************************************************************/
+    expect(ht("<div ng-include=\"'small.html'\"></div>", { item: { content: 'test1' } }, { prefix: 'ng', includeDirs: [__dirname, __dirname + '/includes'] })).toEqual('<div><span>test1</span></div>');
+    expect(ht("<div ng-include=\"'small.html'\"></div>", { item: { content: 'test1' } }, { prefix: 'ng', includeDirs: [__dirname + '/includes', __dirname] })).toEqual('<div><div>test1</div></div>');
+    expect(ht("<div ng-include=\"'medium.html'\"></div>", { item: { content: 'test1' } }, { prefix: 'ng', includeDirs: [__dirname + '/shared', __dirname + '/includes', __dirname] })).toEqual('<div><div class="medium">test1</div></div>');
+
   });
 
 
