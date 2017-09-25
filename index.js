@@ -91,9 +91,9 @@ angularTemplate.cache = new SimpleCache('$$');
 // list of supported and enabled directives (can be changed at runtime)
 angularTemplate.directives = [
   require('./directives/include'),
+  require('./directives/repeat'),
   require('./directives/if'),
   require('./directives/class'),
-  require('./directives/repeat'),
   require('./directives/bind'),
   require('./directives/style')
 ];

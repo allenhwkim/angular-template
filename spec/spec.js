@@ -35,6 +35,11 @@ describe("ht", () => {
       "<li ht-repeat='(k,v) in list'>{{k}}{{v}}</li>",
       { list: { a: 1, b: 2, c: 3 } }
     )).toEqual("<li>a1</li><li>b2</li><li>c3</li>");
+
+    expect(ht(
+      "<a ht-repeat='i in list' ht-if='!!i'>{{i}}</a>",
+      { list: [0, 1, 2, 3] }
+    )).toEqual("<a>1</a><a>2</a><a>3</a>");
   });
 
   it('class', () => {
@@ -140,7 +145,7 @@ describe("ht", () => {
     expect(exampleResult3).toMatch(/<div>foo<\/div>/);
     expect(ht.cache.get('test')).toMatch(/spec\/small\.html/);
     expect(ht.cache.get('test$$spec/small.html')).toMatch(/item\.content/);
-    
+
     expect(ht("<div><div ng-include=\"'spec/small.html'\"></div><div ng-include=\"'spec/small.html'\"></div></div>", { item: { content: 'foo' } }, {
       prefix: 'ng', cache: 'test', preprocess: function (tpl) {
         tpl = tpl.replace(/span/g, 'div');
