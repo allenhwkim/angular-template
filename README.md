@@ -14,7 +14,7 @@ If you are a big fan of AngularJS and you want to use AngularJS as a template en
 This template converts the following one time binding expressions on the server-side;
 
   1. inline expression  
-     e.g. `{{ foo }}`  
+     e.g. `{{ foo }}`
 
   2. `ht-if` attribute  
      e.g., `<div ht-if="foo">..</div>`
@@ -50,6 +50,7 @@ Options
     preprocess: <function>, enables you to modify your template before parsing it as HTML. E.g. You can remove some attributes with RegExp
     includeDirs: <array of string>, a list of paths where to look for template
     cache: <string>, specify cache key to avoid reading files from disk every time
+    locale: <object> an object compatible with one found in locales/en_US.js
 
 Converting Angular-Like Expressions
 ------------------------------------------------
@@ -57,11 +58,17 @@ This will convert the angular-like expressions into html.
 
 1. Curly braces expression.
 
-  Assuming foo has the value of `123`
+  Assuming foo has the value of `aBc`
 
         Input                                | Output
         -------------------------------------+---------------------------------
-        {{foo}}                              | 123
+        {{foo}}                              | aBc
+        {{foo|uppercase}}                    | ABC
+        {{foo|lowercase}}                    | abc
+        {{foo|json}}                         | "abc"
+        {{45.5789 | number:2}}               | 45.57
+        {{5247.28 | currency:undefined:2}}   | $5,247
+        {{1288323623006 | date:'medium' }}   | Oct 29, 2010 5:40:23 AM
 
 2.  **`ht-if`** attribute
 
