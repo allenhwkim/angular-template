@@ -9,9 +9,11 @@ function RepeatDirective($, data, options, angularTemplate) {
     var expr = $(this).attr(options.prefix + '-repeat').trim();
     var result = angularTemplate.helpers.parseRepeatExpression(expr);
     if (!result) return;
-
-    var jsTmplStr = "&lt;% for(var " + result.keyExpr + " in " + result.collectionExpr + ") { " +
-      "  var " + result.valueExpr + "=" + result.collectionExpr + "[" + result.keyExpr + "]; %&gt;";
+    var tmpName = ('_' + result.collectionName).replace(/[^a-zA-Z0-9]/g, '_');
+    var jsTmplStr =
+      "&lt;% var " + tmpName + " = " + angularTemplate.helpers.expression(result.collectionExpr, options) + ";" +
+      "  for(var " + result.keyExpr + " in " + tmpName + ") { " +
+      "  var " + result.valueExpr + " = " + tmpName + "[" + result.keyExpr + "]; %&gt;";
 
     $(this).before(jsTmplStr);
     $(this).after("&lt;% } %&gt;");

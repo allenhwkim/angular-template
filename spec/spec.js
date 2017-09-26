@@ -81,6 +81,11 @@ describe("ht", () => {
       "<a ht-repeat='i in list' ht-if='!!i'>{{i}}</a>",
       { list: [0, 1, 2, 3] }
     )).toEqual("<a>1</a><a>2</a><a>3</a>");
+
+    expect(ht(
+      "<a ht-repeat='i in list | limitTo:2:1'>{{i}}</a>",
+      { list: [0, 1, 2, 3] }
+    )).toEqual("<a>1</a><a>2</a>");
   });
 
   it('class', () => {
