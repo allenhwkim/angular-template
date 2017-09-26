@@ -12,27 +12,45 @@ describe("ht", () => {
     expect(ht("{{x.foo}} {{ x.bar }}", { x: { foo: 1, bar: 2 } })).toEqual("1 2");
   });
 
-  it("pipes", () => {
-    expect(ht("{{x.foo | lowercase }} {{ x.bar | lowercase }}", { x: { foo: 'A', bar: 'B' } })).toEqual("a b");
-    // numbers
-    expect(ht("{{num | number:2 }}", { num: 51.2534 })).toEqual("51.25");
-    expect(ht("{{num | currency:'':2 }}", { num: 51.2534 })).toEqual("51.25");
-    expect(ht("{{num | currency }}", { num: 51.2534 })).toEqual("$51.25");
-    expect(ht("{{num | currency:undefined:0 }}", { num: 51.2534 })).toEqual("$51");
-    
-    // dates
-    expect(ht("{{1288323623006 | date:'medium' }}", { })).toEqual("Oct 29, 2010 5:40:23 AM");
-    expect(ht("{{1288323623006 | date:\"MM/dd/yyyy 'at' h:mma\" }}", { })).toEqual("10/29/2010 at 5:40AM");
-    expect(ht("{{value | date:\"dd-MM-yyyy '|' h:mma\" }}", { value: new Date("2017-09-25T11:00:50.691Z") })).toEqual("25-09-2017 | 1:00PM");
-    
-    // json
-    expect(ht("{{value | json:0 }}", { value: { a: 1 } })).toEqual('{"a":1}');
-    // custom
-    ht.pipes.or = function (options, value, param) {
-      return value ? value : param;
-    };
-    expect(ht("{{value | or: '12|4|b' | uppercase }}", { value: false })).toEqual("12|4|B");
-    
+  describe("pipes", () => {
+
+    it('lowercase/uppercase', () => {
+      expect(ht("{{x.foo | lowercase }} {{ x.bar | lowercase }}", { x: { foo: 'A', bar: 'B' } })).toEqual("a b");
+    });
+
+    it('limitTo', () => {
+      expect(ht("{{value | limitTo:2 }}", { value: "abcd" })).toEqual("ab");
+      expect(ht("{{value | limitTo:2:1 }}", { value: "abcd" })).toEqual("bc");
+      expect(ht("{{value | limitTo }}", { value: "abcd" })).toEqual("abcd");
+      expect(ht("{{[1, 2, 3, 4] | limitTo:2:2 | json:0 }}", {})).toEqual("[3,4]");
+    });
+
+    it('number', () => {
+      expect(ht("{{num | number:2 }}", { num: 51.2534 })).toEqual("51.25");
+    });
+
+    it('currency', () => {
+      expect(ht("{{num | currency:'':2 }}", { num: 51.2534 })).toEqual("51.25");
+      expect(ht("{{num | currency }}", { num: 51.2534 })).toEqual("$51.25");
+      expect(ht("{{num | currency:undefined:0 }}", { num: 51.2534 })).toEqual("$51");
+    });
+
+    it('date', () => {
+      expect(ht("{{1288323623006 | date:'medium' }}", {})).toEqual("Oct 29, 2010 5:40:23 AM");
+      expect(ht("{{1288323623006 | date:\"MM/dd/yyyy 'at' h:mma\" }}", {})).toEqual("10/29/2010 at 5:40AM");
+      expect(ht("{{value | date:\"dd-MM-yyyy '|' h:mma\" }}", { value: new Date("2017-09-25T11:00:50.691Z") })).toEqual("25-09-2017 | 1:00PM");
+    });
+
+    it('json', () => {
+      expect(ht("{{value | json:0 }}", { value: { a: 1 } })).toEqual('{"a":1}');
+    });
+
+    it('custom', () => {
+      ht.pipes.or = function (options, value, param) {
+        return value ? value : param;
+      };
+      expect(ht("{{value | or: '12|4|b' | uppercase }}", { value: false })).toEqual("12|4|B");
+    });
   });
 
   it("if", () => {

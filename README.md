@@ -58,17 +58,20 @@ This will convert the angular-like expressions into html.
 
 1. Curly braces expression.
 
-  Assuming foo has the value of `aBc`
+  Assuming foo has the value of `aBc` and the value is `1234`
 
-        Input                                | Output
-        -------------------------------------+---------------------------------
-        {{foo}}                              | aBc
-        {{foo|uppercase}}                    | ABC
-        {{foo|lowercase}}                    | abc
-        {{foo|json}}                         | "abc"
-        {{45.5789 | number:2}}               | 45.57
-        {{5247.28 | currency:undefined:2}}   | $5,247
-        {{1288323623006 | date:'medium' }}   | Oct 29, 2010 5:40:23 AM
+        Input                                    | Output
+        -----------------------------------------+---------------------------------
+        {{foo}}                                  | aBc
+        {{foo|uppercase}}                        | ABC
+        {{foo|lowercase}}                        | abc
+        {{foo|json}}                             | "abc"
+        {{45.5789 | number:2}}                   | 45.57
+        {{5247.28 | currency:undefined:2}}       | $5,247
+        {{1288323623006 | date:'medium' }}       | Oct 29, 2010 5:40:23 AM
+        {{value | limitTo:2 }}                   | 12
+        {{value | limitTo:2:1 }}                 | 23
+        {{[1, 2, 3, 4] | limitTo:2:2 | json:0 }} | [3,4]
 
 2.  **`ht-if`** attribute
 
