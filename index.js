@@ -119,7 +119,8 @@ angularTemplate.pipes = {
   currency: require('./pipes/currency'),
   json: require('./pipes/json'),
   date: require('./pipes/date'),
-  limitTo: require('./pipes/limit-to')
+  limitTo: require('./pipes/limit-to'),
+  filter: require('./pipes/filter')
 };
 
 // all internal helpers will be exposed as well and can be overriden

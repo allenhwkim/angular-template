@@ -97,7 +97,7 @@ This will convert the angular-like expressions into html.
 
 4. **`ht-repeat`** attribute
 
-  Assuming collection has the vaulue of `{a:1, b:2, c:3, d:4, e:5}`
+  Assuming collection has the value of `{a:1, b:2, c:3, d:4, e:5}`
 
         Input                                         | Output
         ----------------------------------------------+------------------------------------
@@ -109,7 +109,7 @@ This will convert the angular-like expressions into html.
                                                       |   <li> e : 5</li>
                                                       | </ul>
 
-  Assuming collection has the vaulue of `[1,2,3,4,5]`
+  Assuming collection has the value of `[1,2,3,4,5]`
 
         Input                                         | Output
         ----------------------------------------------+------------------------------------
@@ -120,6 +120,26 @@ This will convert the angular-like expressions into html.
         </ul>                                         |   <li> 4 </li>
                                                       |   <li> 5 </li>
                                                       | </ul>
+  Assuming collection has the value of `[1,2,3,4,5]`
+
+        Input                                               | Output
+        ----------------------------------------------------+------------------------------
+        <ul>                                                | <ul>
+           <li ht-repeat="num in collection | limitTo:3:1"> |   <li> 2 </li>
+             {{num}}                                        |   <li> 3 </li>
+           </li>                                            |   <li> 4 </li>
+        </ul>                                               | </ul>
+
+  Assuming collection has the value of `[1,2,3,4,5]` and filterFn is `(v) => v > 1`
+
+        Input                                                    | Output
+        ---------------------------------------------------------+-------------------------
+        <ul>                                                     | <ul>
+           <li ht-repeat="num in collection | filter:filterFn "> |   <li> 2 </li>
+             {{num}}                                             |   <li> 3 </li>
+           </li>                                                 |   <li> 4 </li>
+        </ul>                                                    |   <li> 5 </li>
+                                                                 | </ul>
 
 5.  **`ht-class`** attribute
 
