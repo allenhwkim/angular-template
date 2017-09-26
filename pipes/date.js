@@ -228,3 +228,45 @@ function eraGetter(date, formats) {
 function longEraGetter(date, formats) {
   return date.getFullYear() <= 0 ? formats.ERANAMES[0] : formats.ERANAMES[1];
 }
+
+var ALL_COLONS = /:/g;
+function timezoneToOffset(timezone, fallback) {
+  // Support: IE 9-11 only, Edge 13-15+
+  // IE/Edge do not "understand" colon (`:`) in timezone
+  timezone = timezone.replace(ALL_COLONS, '');
+  var requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
+  return isNaN(requestedTimezoneOffset) ? fallback : requestedTimezoneOffset;
+}
+
+
+function addDateMinutes(date, minutes) {
+  date = new Date(date.getTime());
+  date.setMinutes(date.getMinutes() + minutes);
+  return date;
+}
+
+
+function convertTimezoneToLocal(date, timezone, reverse) {
+  reverse = reverse ? -1 : 1;
+  var dateTimezoneOffset = date.getTimezoneOffset();
+  var timezoneOffset = timezoneToOffset(timezone, dateTimezoneOffset);
+  return addDateMinutes(date, reverse * (timezoneOffset - dateTimezoneOffset));
+}
+
+
+/**
+ * @returns {string} Returns the string representation of the element.
+ */
+function startingTag(element) {
+  element = jqLite(element).clone().empty();
+  var elemHtml = jqLite('<div>').append(element).html();
+  try {
+    return element[0].nodeType === NODE_TYPE_TEXT ? lowercase(elemHtml) :
+        elemHtml.
+          match(/^(<[^>]+>)/)[1].
+          replace(/^<([\w-]+)/, function(match, nodeName) {return '<' + lowercase(nodeName);});
+  } catch (e) {
+    return lowercase(elemHtml);
+  }
+
+}
