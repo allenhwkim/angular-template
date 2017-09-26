@@ -252,21 +252,3 @@ function convertTimezoneToLocal(date, timezone, reverse) {
   var timezoneOffset = timezoneToOffset(timezone, dateTimezoneOffset);
   return addDateMinutes(date, reverse * (timezoneOffset - dateTimezoneOffset));
 }
-
-
-/**
- * @returns {string} Returns the string representation of the element.
- */
-function startingTag(element) {
-  element = jqLite(element).clone().empty();
-  var elemHtml = jqLite('<div>').append(element).html();
-  try {
-    return element[0].nodeType === NODE_TYPE_TEXT ? lowercase(elemHtml) :
-        elemHtml.
-          match(/^(<[^>]+>)/)[1].
-          replace(/^<([\w-]+)/, function(match, nodeName) {return '<' + lowercase(nodeName);});
-  } catch (e) {
-    return lowercase(elemHtml);
-  }
-
-}
