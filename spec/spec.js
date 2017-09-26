@@ -38,6 +38,7 @@ describe("ht", () => {
     it('date', () => {
       expect(ht("{{1288323623006 | date:'medium':'+0200' }}", {})).toEqual("Oct 29, 2010 5:40:23 AM");
       expect(ht("{{1288323623006 | date:\"MM/dd/yyyy 'at' h:mma\":'+0200' }}", {})).toEqual("10/29/2010 at 5:40AM");
+      expect(ht("{{1288323623006 | date:'MM/dd/yyyy \\'a:t\\' h:mma':'+0200' }}", {})).toEqual("10/29/2010 a:t 5:40AM");
       expect(ht("{{value | date:\"dd-MM-yyyy '|' h:mma\":'+0200' }}", { value: new Date("2017-09-25T11:00:50.691Z") })).toEqual("25-09-2017 | 1:00PM");
     });
 
