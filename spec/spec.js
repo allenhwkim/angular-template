@@ -73,6 +73,12 @@ describe("ht", () => {
       "<li ht-repeat='(k,v) in list'>{{v}}</li>",
       { list: { a: 1, b: 2, c: 3 } }
     )).toEqual("<li>1</li><li>2</li><li>3</li>");
+
+    expect(ht(
+      "<li ht-repeat='(k,v) in list track by $index'>{{v}}</li>",
+      { list: { a: 1, b: 2, c: 3 } }
+    )).toEqual("<li>1</li><li>2</li><li>3</li>");
+
     expect(ht(
       "<li ht-repeat='(k,v) in list'>{{k}}{{v}}</li>",
       { list: { a: 1, b: 2, c: 3 } }
