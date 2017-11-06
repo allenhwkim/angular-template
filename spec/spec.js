@@ -100,6 +100,11 @@ describe("ht", () => {
     )).toEqual("<a>1</a><a>2</a><a>3</a>");
 
     expect(ht(
+      "<a ht-repeat='i in list track by $index| filter:filterFn'>{{i}}</a>",
+      { list: [0, 1, 2, 3], filterFn: (v) => v > 0 }
+    )).toEqual("<a>1</a><a>2</a><a>3</a>");
+
+    expect(ht(
       "<a ht-repeat='i in list | filter:filterFn | limitTo:2:1'>{{i}}</a>",
       { list: [0, 1, 2, 3], filterFn: (v) => v > 0 }
     )).toEqual("<a>2</a><a>3</a>");
