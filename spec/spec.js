@@ -40,6 +40,7 @@ describe("ht", () => {
       expect(ht("{{1288323623006 | date:\"MM/dd/yyyy 'at' h:mma\":'+0200' }}", {})).toEqual("10/29/2010 at 5:40AM");
       expect(ht("{{1288323623006 | date:'MM/dd/yyyy \\'a:t\\' h:mma':'+0200' }}", {})).toEqual("10/29/2010 a:t 5:40AM");
       expect(ht("{{value | date:\"dd-MM-yyyy '|' h:mma\":'+0200' }}", { value: new Date("2017-09-25T11:00:50.691Z") })).toEqual("25-09-2017 | 1:00PM");
+      expect(ht("{{'2018-01-14T22:26:59.680Z' | date:'MM/dd/yyyy \\'a:t\\' h:mma':'+0000' }}", {})).toEqual("01/14/2018 a:t 10:26PM");
     });
 
     it('json', () => {
