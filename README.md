@@ -84,15 +84,15 @@ This will convert the angular-like expressions into html.
 
 3. **`ht-include`** attribute
 
-  Assuming foo.html has the following contents `<b>file contents</b>`
+  Assuming foo.html has the following contents `<b>{{prop}} is {{value}}</b>` and that `prop="number", item = 20`
 
  The input and output would like;
 
-        Input                                | Output
-        -------------------------------------+------------------------------------
-        <p ht-include="'foo.html'"></p>      | <p>
-                                             |   <b>file contents</b>
-                                             | </p>
+        Input                                    | Output
+        -----------------------------------------+------------------------------------
+        <p ht-include="'foo.html'"               | <p>
+           ht-include-context="{value:item}"></p>|   <b>number is 20</b>
+                                                 | </p>
 
 
 4. **`ht-repeat`** attribute

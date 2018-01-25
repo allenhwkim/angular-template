@@ -7,7 +7,7 @@ function IncludeDirective($, data, options, angularTemplate) {
     */
   var htIncludes = $("*[" + options.prefix + "-include]");
   htIncludes.each(function (i, elem) {
-    var context = '{}';
+    var context = ($(this).attr(options.prefix + '-include-context') || '{}').trim();
     var repeatParents = [];
     var existingContextProperties = [];
     // parse all repeat expressions from all the parents
@@ -17,9 +17,16 @@ function IncludeDirective($, data, options, angularTemplate) {
         repeatParents.push(result); // remember all of them in bottom-top order
       }
     });
+
     // go through each repeat expression (if any) and generate context with correct variables, ignoring already set props. aka deeper value is more important
     if (repeatParents.length > 0) {
-      context = '{' + repeatParents.map(function (el) {
+      // remove last char from {} or {a:b}
+      context = context.substr(0, context.length - 1);
+      if (context.indexOf(':') !== -1) { // is there any property in context value? e.g. {item:value}
+        context += ',';
+      }
+
+      context += '' + repeatParents.map(function (el) {
         var props = [];
         if (existingContextProperties.indexOf(el.keyExpr) === -1) {
           props.push(el.keyExpr + ':' + el.keyExpr);
@@ -28,7 +35,7 @@ function IncludeDirective($, data, options, angularTemplate) {
           props.push(el.valueExpr + ':' + el.valueExpr);
         }
         return props.length > 0 ? props.join(',') : null;
-      }).join(',') + '}'
+      }).join(',') + '}';
     }
     var expr = $(this).attr(options.prefix + '-include').trim();
     if (expr.charAt(0) !== "'") { // if expression is given, try to take values from context and fallback to string value otherwise
@@ -42,6 +49,7 @@ function IncludeDirective($, data, options, angularTemplate) {
       $(this).append("&lt;%= $helpers.htIncludeFunc(" + expr + ", data," + context + ") %&gt;");
     }
     $(this).removeAttr(options.prefix + '-include');
+    $(this).removeAttr(options.prefix + '-include-context');
   });
 }
 

@@ -188,6 +188,10 @@ describe("ht", () => {
 
   });
 
+  it("include context", () => {
+    expect(ht("<div ng-include=\"'includes/small.html'\" ng-include-context=\"{item:foo}\"></div>", { foo: { content: 'test1' } }, { prefix: 'ng', includeDirs: [__dirname] })).toEqual('<div><div>test1</div></div>');
+    expect(ht("<div ng-repeat=\"parentItem in items\"><div ng-include=\"'includes/small.html'\" ng-include-context=\"{item:parentItem.foo}\"></div></div>", { items: [{ foo: { content: 'test1' } }] }, { prefix: 'ng', includeDirs: [__dirname] })).toEqual('<div><div><div>test1</div></div></div>');
+  });
 
   it("jsdoc template", () => {
     /*******************************************************************
