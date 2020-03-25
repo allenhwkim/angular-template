@@ -64,6 +64,25 @@ describe("ht", () => {
     expect(ht("<div ht-if='!x.bar'>NO</div>", { x: { foo: true } })).toEqual("<div>NO</div>");
   });
 
+  it("show", () => {
+    /*******************************************************
+     * `ht-show` expression test
+     *******************************************************/
+    expect(ht("<div ht-show='x.foo'>YES</div>", { x: { foo: true } })).toEqual("<div>YES</div>");
+    expect(ht("<div ht-show='x.bar'>YES</div>", { x: { foo: true } })).toEqual("");
+    expect(ht("<div ht-show='!x.bar'>NO</div>", { x: { foo: true } })).toEqual("<div>NO</div>");
+  });
+
+
+  it("hide", () => {
+    /*******************************************************
+     * `ht-hide` expression test
+     *******************************************************/
+    expect(ht("<div ht-hide='x.foo'>YES</div>", { x: { foo: true } })).toEqual("");
+    expect(ht("<div ht-hide='x.bar'>YES</div>", { x: { foo: true } })).toEqual("<div>YES</div>");
+    expect(ht("<div ht-hide='!x.bar'>NO</div>", { x: { foo: true } })).toEqual("");
+  });
+
   it("repeat", () => {
     /*******************************************************
      * `ht-repeat` expression test
