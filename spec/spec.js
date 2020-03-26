@@ -55,6 +55,15 @@ describe("ht", () => {
     });
   });
 
+  it("advanced expressions", () => {
+    /*******************************************************
+     * advanced expressions test
+     *******************************************************/
+    expect(ht("<div ht-if='x.foo > x.bar'>YES</div>", { x: { foo: 10, bar: 11 } })).toEqual("");
+    expect(ht("<div ht-if='x.bar || x.foo'>YES</div>", { x: { foo: true } })).toEqual("<div>YES</div>");
+    expect(ht("<div ht-if='x.bar != x.foo'>NO</div>", { x: { foo: 'foo', bar: 'bar' } })).toEqual("<div>NO</div>");
+  });
+
   it("if", () => {
     /*******************************************************
      * `ht-if` expression test
