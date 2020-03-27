@@ -48,7 +48,7 @@ var angularTemplate = function (fileOrHtml, data, options, nested) {
       options.prefix = 'ht';
     }
     if (!options.cheerioOptions) {
-      options.cheerioOptions = { _useHtmlParser2: true };
+      options.cheerioOptions = { _useHtmlParser2: true, decodeEntities: false };
     }
     var $ = cheerio.load(html, options.cheerioOptions);
 

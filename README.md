@@ -18,6 +18,11 @@ This template converts the following one time binding expressions on the server-
 
   2. `ht-if` attribute  
      e.g., `<div ht-if="foo">..</div>`
+     e.g., `<div ht-show="foo">..</div>`
+     e.g., `<div ht-hide="foo">..</div>`
+     e.g., `<div ht-hide="foo != bar">..</div>`
+     e.g., `<div ht-hide="foo > bar">..</div>`
+
 
   3. `ht-repeat` attribute  
      e.g., `<li ht-repeat="el in list">..</li>`  
@@ -172,6 +177,7 @@ This accepts the same format as [ng-class](https://docs.angularjs.org/api/ng/dir
         <p style="font-size:14px" ht-style="{color:color}">SHOW</p>| <p style="font-size:14px;color:red">SHOW</p>
 
 This accepts the same format as [ng-style](https://docs.angularjs.org/api/ng/directive/ngStyle)
+
 
 
 LICENSE: MIT
